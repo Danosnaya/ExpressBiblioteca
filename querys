@@ -1,0 +1,50 @@
+﻿
+
+-- consulta para detalles de libro con editorial 
+select L.isbn , L.titulo, E.id, E.nombre
+from libros as L
+join editorial as E on L.editorial_id = E.id 
+
+
+-- consulta de autores por libro 
+select L.isbn,A.id , P.nombre , P.apellido_paterno, P.apellido_materno
+from libros as L
+join libros_autores as LA on  LA.libros_id = L.isbn
+join autores as A on A.id = LA.autor_id 
+join personas as P on p.curp = A.persona_curp
+where L.isbn = 'a'
+order by  L.isbn
+
+
+
+-- detalle de libro 
+
+select L.isbn , L.titulo, L.resumen, L.numpaginas,E.id, E.nombre
+from libros as L
+join editorial as E on L.editorial_id = E.id 
+where L.isbn ='a'
+
+
+--
+  select A.*, P.*
+  from autores as A
+  join personas as  P on P.curp = A.persona_curp 
+  where A.id = 1
+
+
+
+
+--group by editorial_id
+--order by editorial_id desc
+
+
+---  
+
+--select libros.titulo , editorial.nombre from libros ,editorial where libros.editorial_id = editorial.id 
+---
+
+--select L.titulo , E.nombre 
+--from libros as L join editorial  as E on L.editorial_id = E.id 
+
+
+

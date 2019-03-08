@@ -1,0 +1,13 @@
+
+<input style="margin-left: 75%" type="button" value="Regresar" onclick="location.href='http://localhost:3001/libros/';" >
+
+<h1>Resultado de busqueda </h1>
+<ul>
+    {{#each libroResponse}}
+        <li><h3>ID: {{this.id}}</h3>
+            <h4>Titulo: {{this.title}}</h4>
+            <p>Editorial: {{this.edit}} </p>
+            <p>Author: {{this.author}}  </p>
+        </li>
+    {{/each}}
+</ul>

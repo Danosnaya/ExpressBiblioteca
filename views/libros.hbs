@@ -1,0 +1,42 @@
+<center>
+    <h1>{{title}}</h1>
+    <form action="busqueda" method="post">
+        <input type="Text" name="ParamBus">
+        <input type="submit" value="Buscar">
+    </form>
+</center>
+<a class="boton3" href="#openModal">ADD</a>
+
+<center>
+    <ul>
+    {{#each books}}
+    <a href="http://localhost:3001/libros/{{this.id}}/detail">
+        <h4>Titulo :{{this.title}}</h4> <p>Editorial: {{this.edit}} - Author: {{this.author}}  </p>
+    </a>
+    {{/each}}
+
+    </ul>
+</center>
+
+<div id="openModal" class="modalDialog" >
+    <div>
+        <a href="#close" title="Close" class="close">X</a>
+        <h1> Editor de libro </h1>
+        <form action="agregar" method="post">
+            <label for="Title">Title</label>
+            <input type="Text" name="Titlenew"   required="required" >
+            <br>
+            <br>
+            <label for="Author">Author</label>
+            <input type="Text" name="Authornew" required="required">
+            <br>
+            <br>
+            <label for="Editorial">Editorial</label>
+            <input type="Text" name="Editorialnew" required="required">
+            <br>
+            <br>
+            <input type="button" value="Cancel" onclick="location.href='http://localhost:3001/libros/';">
+            <input style="margin-left: 2%" type="submit" value="Add">
+        </form>
+    </div>
+</div>

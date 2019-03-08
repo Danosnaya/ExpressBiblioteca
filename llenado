@@ -1,0 +1,20 @@
+﻿insert into editorial(id,nombre) values(1,'Prentice-Hall');
+insert into editorial(id,nombre) values(2,'Prentice');
+insert into editorial(id,nombre) values(3,'Pearson');
+
+insert into libros(isbn,titulo,resumen,numpaginas,editorial_id) values('a','Sistemas de Comunicaciones Electronica','synopsis',267,1);
+insert into libros(isbn,titulo,resumen,numpaginas,editorial_id) values('b','Señales y Sistemas','synopsis',285,2);
+insert into libros(isbn,titulo,resumen,numpaginas,editorial_id) values('c','Analisis de fourier','synopsis',365,3);
+
+insert into personas(curp,nombre,apellido_paterno,apellido_materno,fecha_nacimiento) values('ATGS740903HJALSRN06','Tomasi','Garcia','Sanchez','3 de Septiembre 1974');
+insert into personas(curp,nombre,apellido_paterno,apellido_materno,fecha_nacimiento) values('WWT760219HOAXSRN01','Willisky','Wallace','Torres','19 de Febrero 1976');
+insert into personas(curp,nombre,apellido_paterno,apellido_materno,fecha_nacimiento) values('HWH851223MDFSRN09','Hsu','Hewei','washington','23 de Diciembre 1985');
+
+insert into autores(id,persona_curp,fechapubl,bibliografia) values (1,'ATGS740903HJALSRN06','15 mayo 1993','Biography');
+insert into autores(id,persona_curp,fechapubl,bibliografia) values (2,'WWT760219HOAXSRN01','19 Febrero 1990','Biography');
+insert into autores(id,persona_curp,fechapubl,bibliografia) values (3,'HWH851223MDFSRN09','21 Abril 2000','Biography');
+
+insert into libros_autores(id,autor_id,libros_id) values (1,1,'a');
+insert into libros_autores(id,autor_id,libros_id) values (2,2,'a');
+insert into libros_autores(id,autor_id,libros_id) values (3,3,'c');
+insert into libros_autores(id,autor_id,libros_id) values (4,2,'a');

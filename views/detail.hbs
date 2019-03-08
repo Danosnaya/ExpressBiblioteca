@@ -1,0 +1,64 @@
+
+    <input style="margin-left: 75%" type="button" value="Regresar" onclick="location.href='http://localhost:3001/libros/';" >
+
+<center>
+    <h1>Detalles del libro {{this.id}}</h1>
+    <ul>
+        <h2> ID : {{this.id}}</h2>
+        <h3>Titulo: {{this.title}}</h3>
+        <h3>Editorial :{{this.edit}}</h3>
+        <h3> Author : {{this.author}}  </h3>
+
+    </ul>
+    <a class="boton2" href="#openModal2">Editar</a>
+    <a class="boton" href="#openModal">Eliminar</a>
+</center>
+
+    <div id="openModal" class="modalDialog" >
+        <div>
+            <a href="#close" title="Close" class="close">X</a>
+            <h2>Advertencia</h2>
+            <p>¿Seguro que desea eliminar el libro {{this.title}} ?
+            <input align="rigth" type="button" value="No" onclick="location.href='http://localhost:3001/libros/{{this.id}}/detail';">
+            <input style="margin-left: 2%" type="button" value="Si" onclick="location.href='http://localhost:3001/libros/{{this.id}}/eliminar';">
+            </p>
+        </div>
+    </div>
+
+
+    <div id="openModal2" class="modalDialog" >
+        <div>
+            <a href="#close" title="Close" class="close">X</a>
+            <h1> Editor de libro </h1>
+            <form action="edit" method="post">
+                <label for="Newtit">Nuevo Titulo</label>
+                <input type="Text" name="Newtit" value="{{this.title}}" >
+                <br>
+                <br>
+                <label for="Newedito">Nuevo Editorial</label>
+                <input type="Text" name="Newedito" value = "{{this.edit}}" >
+                <br>
+                <br>
+                <label for="Newauth">Nuevo author</label>
+                <input type="Text" name="Newauth"  value = "{{this.author}}">
+                <br>
+                <br>
+                <input type="button" value="Cancel" onclick="location.href='http://localhost:3001/libros/{{this.id}}/detail';">
+                <input style="margin-left: 2%" type="submit" value="Save" >
+            </form>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
