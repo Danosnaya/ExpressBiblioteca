@@ -1,15 +1,22 @@
 
 //var bookPersistence = new BookPersistence();
 
+var DataSource = require('./../config/DataBaseConfig.js').DataSource;
+var dataSource = new DataSource();
+
+
  BookService = function (){
- this.bookList= [
-                             {id:1,"title": "Sistemas de Comunicaciones Electronicas","edit":"Prentice-Hall","author":"Tomasi"},
-                             {id:2,"title": "Señales y Sistemas" ,"edit" : "Prentice", "author" : "Willsky"},
-                             {id:3,"title": "Analisis de fourier" , "edit" : "Pearson", "author" : "Hsu"}
-                             ]
+
+var SELECT_LIBROS_DATA_LIST = "select L.isbn as id, L.titulo as title, E.id, E.nombre as edit"
+                                 + " from libros as L"
+                                 + " join editorial as E on L.editorial_id = E.id "
 
 this.getList= function (cb){
-cb (this.bookList);
+
+ dataSource.executeQUERY(SELECT_LIBROS_DATA_LIST,{},function(bookList){
+ console.log (" este console  es del service " + JSON.stringify(bookList));
+ cb (bookList);
+ } );
 }
 
 this.findById = function (idparam,cb){
@@ -212,7 +219,7 @@ this.BuscaBook = function (id,author,edit,title,cb){
             cb (libroResponse);
 }
 
-
+}
 exports.BookService = BookService;
 
 

@@ -12,11 +12,11 @@ const connectionData = {
     password: 'Kh@rt0um',
     port: 5432,
 };
- const client = new Client(connectionData);
 
 
 
  this.executeQUERY = function (query , params , cb){
+ const client = new Client(connectionData);
  var resultSet;
 var intryset =Object.entries(params) ;
 for (var nodo in intryset ){
@@ -28,24 +28,21 @@ console.log (query );
 client.connect()
 client.query(query)
     .then(response => {
-        console.log(response.rows);
+        console.log (" esta  es la respuesta del query "+  JSON.stringify (resultSet));
         resultSet =response.rows ;
+         cb (resultSet);
+
         client.end()
     })
     .catch(err => {
         client.end()
     })
-
- cb (resultSet)
  }
 
- this.executeRESPONSE = function(respons, libros , cb ){
-
- }
 
 }
 
 
+exports.DataSource = DataSource;
 
- module.export = DataSource ;
 
