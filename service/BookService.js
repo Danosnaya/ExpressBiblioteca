@@ -47,11 +47,13 @@ this.getListauto = function (id,cb){
 
 
 this.findById = function (idparam,cb){
+ dataSource.executeQUERY(SELECT_LIBROS_DATA_LIST,{},function(bookList){
  var libroResponse = null ;
- var listTemp = this.bookList;
- libroResponse  = this.bookList.find(book => book.id == idparam);
+ var listTemp = bookList;
+ libroResponse  = bookList.find(book => book.id == idparam);
 
 cb (libroResponse)
+});
 }
 
 this.DeleteBook = function(idnew, cb){
