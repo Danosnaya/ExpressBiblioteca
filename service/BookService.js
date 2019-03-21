@@ -4,20 +4,47 @@
 var DataSource = require('./../config/DataBaseConfig.js').DataSource;
 var dataSource = new DataSource();
 
+function callbackReturn(object ){
+return object ;}
 
  BookService = function (){
 
-var SELECT_LIBROS_DATA_LIST = "select L.isbn as id, L.titulo as title, E.id, E.nombre as edit"
+var SELECT_LIBROS_DATA_LIST = "select L.isbn as id, L.titulo as title, E.id as edit_id, E.nombre as edit"
                                  + " from libros as L"
                                  + " join editorial as E on L.editorial_id = E.id "
 
-this.getList= function (cb){
 
- dataSource.executeQUERY(SELECT_LIBROS_DATA_LIST,{},function(bookList){
- console.log (" este console  es del service " + JSON.stringify(bookList));
- cb (bookList);
- } );
+var SELECT_LIBROS_DATA_LIST_AUTOR = " select L.isbn, P.nombre as author , P.apellido_paterno as author2 , P.apellido_materno as author3 "
+                                   +" from libros as L"
+                                   +" join libros_autores as LA on  LA.libros_id = L.isbn"
+                                   +" join autores as A on A.id = LA.autor_id"
+                                   +" join personas as P on p.curp = A.persona_curp"
+                                   +" where L.isbn = 'IDX' "
+                                   //+"order by  L.isbn"
+
+this.getList= function (cb){
+//var temporalLis = [];
+    dataSource.executeQUERY(SELECT_LIBROS_DATA_LIST,{},function(bookList){
+    for (var x = 0 ; x < bookList.length ; ++x){
+        dataSource.executeQUERY(SELECT_LIBROS_DATA_LIST_AUTOR ,{IDX:bookList[x].id},function(autorList){
+            bookList[x].author = autorList;
+            //temporalLis.push(autorList);
+            console.log(" <<<<< Lista de libros >>>>>" +  JSON.stringify(bookList.title));
+        });
+    }
+    console.log("  --------------------- Regreso al For --------------------" +  JSON.stringify( bookList.author ));
+    cb (bookList);
+    });
 }
+
+
+this.getListauto = function (id,cb){
+    dataSource.executeQUERY(SELECT_LIBROS_DATA_LIST_AUTOR ,{IDX:id},function(autorList){
+    cb(autorList);
+    }  );
+}
+
+
 
 this.findById = function (idparam,cb){
  var libroResponse = null ;

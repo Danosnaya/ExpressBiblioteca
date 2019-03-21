@@ -13,23 +13,21 @@ const connectionData = {
     port: 5432,
 };
 
-
-
  this.executeQUERY = function (query , params , cb){
  const client = new Client(connectionData);
  var resultSet;
-var intryset =Object.entries(params) ;
+var intryset = Object.entries(params) ;
 for (var nodo in intryset ){
 console.log ("key ["+ intryset [nodo][0]+"] value :: " + intryset [nodo][1]);
   query = query.replace(intryset [nodo][0], intryset [nodo][1]);
 }
-console.log (query );
+console.log ( query );
 
 client.connect()
 client.query(query)
     .then(response => {
-        console.log (" esta  es la respuesta del query "+  JSON.stringify (resultSet));
-        resultSet =response.rows ;
+                  resultSet =response.rows ;
+              console.log (" Query ["+query+"] \n Resultset :: "  + JSON.stringify (resultSet));
          cb (resultSet);
 
         client.end()
@@ -39,9 +37,7 @@ client.query(query)
     })
  }
 
-
 }
-
 
 exports.DataSource = DataSource;
 

@@ -48,3 +48,9 @@ where L.isbn ='a'
 
 
 
+ select L.isbn, P.nombre as author, P.apellido_paterno as author2, P.apellido_materno as author3
+  from libros as L 
+  join libros_autores as LA on  LA.libros_id = L.isbn 
+  join autores as A on A.id = LA.autor_id 
+  join personas as P on p.curp = A.persona_curp where L.isbn = 'a'
+select * from libros 

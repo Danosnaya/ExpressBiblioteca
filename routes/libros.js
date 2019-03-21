@@ -18,13 +18,33 @@ client.connect()
 
 */
 /* GET home page. */
+//bookService.getListauto(function(author){
+     // console.log("result es :: " +JSON.stringify(result))
+    //  var result2 = {};
+    //  result2.author = author;
+       //  } );
 router.get('/', function(req, res, next) {
- bookService.getList(function(books){
- var result = {};
- result.title ="Libros ";
- result.books = books;
- res.render('libros',result);
- });
+    var result = {};
+    var result2 = [];
+    bookService.getList(function(books){
+
+    console.log(" los libros son :: " + JSON.stringify(books));
+/*
+        for (var x = 0 ; x < books.length ; ++x){
+            bookService.getListauto(books[x].id, function(authors){
+               result2.push(authors);
+                console.log("--------------- Authoress ------------:: " + JSON.stringify(result2));
+            });
+
+        }
+        console.log("Esta linea Imprime result2 ------------:: " + JSON.stringify(result2));*/
+            result.title ="Libros ";
+            result.books = books;
+       //     result.author = result2;
+       //     console.log("--------------- libros ------------:: " + JSON.stringify(result));
+            res.render('libros',result);
+} );
+
 });
 
 // ejemple de path params   :::   libros/1    libros/2
