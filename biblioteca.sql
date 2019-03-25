@@ -1,8 +1,9 @@
 ﻿-- Database: biblioteca
 
--- DROP DATABASE biblioteca;
+--DROP DATABASE biblioteca;
 
--- CREATE DATABASE biblioteca;
+--CREATE DATABASE biblioteca;
+
 CREATE TABLE editorial
 (
   id integer NOT NULL,
@@ -19,8 +20,8 @@ CREATE TABLE libros
   editorial_id integer,
   CONSTRAINT PK_libros PRIMARY KEY (isbn),
   CONSTRAINT FK_libros_editorial_id FOREIGN KEY (editorial_id)
-      REFERENCES editorial (id) MATCH SIMPLE
-      ON UPDATE NO ACTION ON DELETE NO ACTION
+      REFERENCES editorial (id) 
+      ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 CREATE TABLE personas
@@ -41,8 +42,8 @@ CREATE TABLE autores
   bibliografia text,
   CONSTRAINT PK_autores_ID PRIMARY KEY (id),
   CONSTRAINT FK_autores_persona_CURP FOREIGN KEY (persona_curp)
-      REFERENCES personas (curp) MATCH SIMPLE
-      ON UPDATE NO ACTION ON DELETE NO ACTION
+      REFERENCES personas (curp)
+      ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 CREATE TABLE libros_autores
@@ -52,11 +53,11 @@ CREATE TABLE libros_autores
   libros_id varchar(50),
   CONSTRAINT PK_libros_autores_idL PRIMARY KEY (id),
   CONSTRAINT FK_libros_autores_Autor_ID FOREIGN KEY (autor_id)
-      REFERENCES autores (id) MATCH SIMPLE
-      ON UPDATE NO ACTION ON DELETE NO ACTION,
+      REFERENCES autores (id) 
+      ON UPDATE CASCADE ON DELETE CASCADE,
   CONSTRAINT FK_libros_autores_Libros_id FOREIGN KEY (libros_id)
-      REFERENCES libros (isbn) MATCH SIMPLE
-      ON UPDATE NO ACTION ON DELETE NO ACTION
+      REFERENCES libros (isbn) 
+      ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 
