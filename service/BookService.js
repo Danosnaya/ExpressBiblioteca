@@ -186,17 +186,18 @@ this.editBook = function(idparam,titlenew,authornew,editnew, cb){
 
     }
 
-this.BuscaBook = function (id,author,edit,title,cb){
+this.BuscaBook = function (id,edit,title,cb){
+dataSource.executeQUERY(SELECT_LIBROS_DATA_LIST,{},function(bookList){
     var libroResponse = [] ;
     var liboritem= null;
-    var listTemp = this.bookList;
+    var listTemp = bookList;
     var istrueid = true  ;
-    var istrueauthor = true  ;
+  //  var istrueauthor = true  ;
     var istrueedit = true  ;
     var istruetitle = true  ;
 
-        console.log("libros :: " +JSON.stringify(this.bookList));
-           for (var item in listTemp){
+        console.log("libros :: " +JSON.stringify(bookList));
+            for (var item in listTemp){
         /*   listTemp[item].author = listTemp[item].author.toLowerCase();
            listTemp[item].title = listTemp[item].title.toLowerCase();
            listTemp[item].edit = listTemp[item].edit.toLowerCase();*/
@@ -211,7 +212,7 @@ this.BuscaBook = function (id,author,edit,title,cb){
                   istrueid = true ;
                }
            }
-
+/*
             if (author != false ){
 
                      if (liboritem.author.toLowerCase() != author && !liboritem.author.toLowerCase().includes(author) && liboritem.author.trim() != author){
@@ -221,8 +222,8 @@ this.BuscaBook = function (id,author,edit,title,cb){
                      istrueauthor= true ;
                      }
                   }
-
-
+*/
+            console.log("la lista temporal es:: -------------------------------------------------------------------------------------\n" );
             if (edit != false  ){
 
                      if (liboritem.edit.toLowerCase() != edit && !liboritem.edit.toLowerCase().includes(edit) && liboritem.edit.trim() != edit) {
@@ -243,9 +244,9 @@ this.BuscaBook = function (id,author,edit,title,cb){
                                  }
                               }
 
-              if ( istrueid || istrueauthor || istrueedit || istruetitle){
+              if ( istrueid || istrueedit || istruetitle){
                         if (liboritem ){
-                        libroResponse.push(this.bookList[item]);
+                        libroResponse.push(bookList[item]);
                         }
                         else{
                         break;
@@ -257,6 +258,7 @@ this.BuscaBook = function (id,author,edit,title,cb){
             }
             console.log("el libro es: " +libroResponse)
             cb (libroResponse);
+            });
 }
 
 }
