@@ -1,0 +1,19 @@
+﻿
+delete from libros 
+where isbn = 'a';
+select L.isbn , L.titulo, E.id, E.nombre
+from libros as L
+join editorial as E on L.editorial_id = E.id 
+
+delete libros, libors_autor
+from libros
+join libros
+
+delete from libros
+join libros_autores
+on libros.isbn=libros_autores.libros_id
+where libros_autores.libro_id <> 'a';
+select L.isbn , L.titulo, E.id, E.nombre
+from libros as L
+join editorial as E on L.editorial_id = E.id 
+

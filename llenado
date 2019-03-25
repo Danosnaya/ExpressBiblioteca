@@ -15,6 +15,6 @@ insert into autores(id,persona_curp,fechapubl,bibliografia) values (2,'WWT760219
 insert into autores(id,persona_curp,fechapubl,bibliografia) values (3,'HWH851223MDFSRN09','21 Abril 2000','Biography');
 
 insert into libros_autores(id,autor_id,libros_id) values (1,1,'a');
-insert into libros_autores(id,autor_id,libros_id) values (2,2,'a');
+insert into libros_autores(id,autor_id,libros_id) values (2,2,'b');
 insert into libros_autores(id,autor_id,libros_id) values (3,3,'c');
 insert into libros_autores(id,autor_id,libros_id) values (4,2,'a');

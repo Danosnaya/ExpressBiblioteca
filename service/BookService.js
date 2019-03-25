@@ -22,6 +22,12 @@ var SELECT_LIBROS_DATA_LIST_AUTOR = " select L.isbn, P.nombre as author , P.apel
                                    +" where L.isbn = 'IDX' "
                                    //+"order by  L.isbn"
 
+var SELECT_LIBROS_DELETE_LIST = " delete from libros "
+                                 + " where isbn = 'IDX'; "
+                                 + " select L.isbn , L.titulo, E.id, E.nombre "
+                                 + " from libros as L "
+                                 + " join editorial as E on L.editorial_id = E.id "
+
 this.getList= function (cb){
 //var temporalLis = [];
     dataSource.executeQUERY(SELECT_LIBROS_DATA_LIST,{},function(bookList){
@@ -29,10 +35,10 @@ this.getList= function (cb){
         dataSource.executeQUERY(SELECT_LIBROS_DATA_LIST_AUTOR ,{IDX:bookList[x].id},function(autorList){
             bookList[x].author = autorList;
             //temporalLis.push(autorList);
-            console.log(" <<<<< Lista de libros >>>>>" +  JSON.stringify(bookList.title));
+           // console.log(" <<<<< Lista de libros >>>>>" +  JSON.stringify(bookList.title));
         });
     }
-    console.log("  --------------------- Regreso al For --------------------" +  JSON.stringify( bookList.author ));
+    //console.log("  --------------------- Regreso al For --------------------" +  JSON.stringify( bookList.author ));
     cb (bookList);
     });
 }
@@ -56,16 +62,21 @@ cb (libroResponse)
 });
 }
 
-this.DeleteBook = function(idnew, cb){
-
-    libroResponse  = this.bookList.find(book => book.id == idnew);
+this.DeleteBook = function(idnew){
+dataSource.executeQUERY(SELECT_LIBROS_DATA_LIST,{},function(bookList){
+    libroResponse  = bookList.find(book => book.id == idnew);
+    console.log("El ID del libro a eliminar es :: " + JSON.stringify(libroResponse.title));
+    console.log("ELiminar-------------------------------------------------------------------------------------------------");
     var indx = libroResponse.id ;
-            var listTemp = this.bookList;
+            var listTemp = bookList;
             console.log("indx ::" +indx);
             console.log("El libro encontrado es ::" +JSON.stringify(libroResponse));
-            //delete this.bookList[indx]
-            this.bookList.splice(indx - 1,1);
+           dataSource.executeQUERY(SELECT_LIBROS_DELETE_LIST,{IDX:indx},function(bookList){});
 
+            console.log("Los libros actuales son : " + JSON.stringify(bookList));
+           //bookList.splice(indx - 1,1);
+
+    });
 }
 
 this.findBook = function (id,author,edit,cb){
