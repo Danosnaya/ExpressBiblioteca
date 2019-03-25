@@ -85,17 +85,17 @@ router.post('/busqueda', function(req, res, next){
     req.body.ParamBus = req.body.ParamBus.toLowerCase();
     var id = req.body.ParamBus;
     var title = req.body.ParamBus;
-    var author = req.body.ParamBus;
+    //var author = req.body.ParamBus;
     var edit = req.body.ParamBus;
 
     console.log("XD :: " + id);
     console.log("XD :: " + title);
-    console.log("XD :: " + author);
+   // console.log("XD :: " + author);
     console.log("XD :: " + edit);
-    if (id == "" && author == "" && edit == "" && title == ""){
+    if (id == "" /*&& author == ""*/ && edit == "" && title == ""){
             res.status(404).send('Ningun Parametro se escribio para la busqueda');
     }
-    else {    bookService.BuscaBook(id,author,edit,title,function(libroResponse){
+    else {    bookService.BuscaBook(id,edit,title,function(libroResponse){
                     var result = {};
                     result.libroResponse = libroResponse;
                     res.render('search',result);
