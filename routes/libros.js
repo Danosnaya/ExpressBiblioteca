@@ -109,19 +109,13 @@ router.post('/busqueda', function(req, res, next){
 
   router.post('/agregar', function(req, res){
   var titlenew = req.body.Titlenew;
+  var resumnew = req.body.Resume;
+  var numpagina = req.body.Numpag;
   var authornew = req.body.Authornew;
   var editnew = req.body.Editorialnew;
-      console.log("aqui ::")
-
-  bookService.addBook(titlenew,authornew,editnew,function(){
+  bookService.addBook(titlenew,editnew,numpagina,resumnew,function(){
   });
     res.render('redirecc', {formName:'Redireccionando a la pagina principal'});
-  /*bookService.getList(function(books){
-   var result = {};
-   result.title ="Libros ";
-   result.books = books;
-   res.render('libros',result);
-   });*/
 
    });
 

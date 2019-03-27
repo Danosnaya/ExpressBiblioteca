@@ -3,6 +3,7 @@
 --DROP DATABASE biblioteca;
 
 --CREATE DATABASE biblioteca;
+DROP TABLE editorial CASCADE;
 
 CREATE TABLE editorial
 (
@@ -10,6 +11,8 @@ CREATE TABLE editorial
   nombre varchar(50),
   CONSTRAINT PK_editorial PRIMARY KEY (id)
 );
+
+DROP TABLE libros CASCADE;
 
 CREATE TABLE libros
 (
@@ -24,6 +27,8 @@ CREATE TABLE libros
       ON UPDATE CASCADE ON DELETE CASCADE
 );
 
+DROP TABLE personas CASCADE;
+
 CREATE TABLE personas
 (
   curp varchar(50) NOT NULL,
@@ -33,6 +38,8 @@ CREATE TABLE personas
   fecha_nacimiento varchar(50),
   CONSTRAINT PK_personas_CURP PRIMARY KEY (curp)
 );
+
+DROP TABLE autores CASCADE;
 
 CREATE TABLE autores
 (
@@ -45,6 +52,8 @@ CREATE TABLE autores
       REFERENCES personas (curp)
       ON UPDATE CASCADE ON DELETE CASCADE
 );
+
+DROP TABLE libros_autores CASCADE;
 
 CREATE TABLE libros_autores
 (
