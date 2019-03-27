@@ -28,6 +28,9 @@ var SELECT_LIBROS_DELETE_LIST = " delete from libros "
                                  + " from libros as L "
                                  + " join editorial as E on L.editorial_id = E.id "
 
+var SELECT_LIBROS_ADD_LIST = " insert into editorial(id,nombre) values(IDSN,'EDITOR');"
+                               + " insert into libros(isbn,titulo,resumen,numpaginas,editorial_id) values('ISBNAU','TITULO','RESE',NOPAG, IDNS);"
+
 this.getList= function (cb){
 //var temporalLis = [];
     dataSource.executeQUERY(SELECT_LIBROS_DATA_LIST,{},function(bookList){
@@ -134,24 +137,28 @@ this.findBook = function (id,author,edit,cb){
             cb (libroResponse);
 }
 
-this.addBook = function (titlenew,authornew,editnew){
-function getMAx( array){
-    return array.reduce(function (a, b){
-      var val =  Math.max(a.id, b.id);
-      return  a.id == val ? a:b;
+this.addBook = function (titlenew,editnew,numpagina,resumnew){
+console.log("aqui Llego ::");
+var ids = [];
+var idposibles = new Array('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u','v', 'w', 'x', 'y', 'z' );
+dataSource.executeQUERY(SELECT_LIBROS_DATA_LIST,{},function(bookList){
+for (var y = 0 ;y < bookList.length; y++){
+    console.log("----------------------------------------------------los id son: "+ JSON.stringify(bookList[y].id));
+    ids.push(bookList[y].id);
+    }
+    var idnum = bookList.length + 1;
+    console.log("El numero de id es :: " +idnum);
+    for (var x = 0 ;x < 27; x++){
+    var cletra = idposibles[Math.floor(Math.random()*idposibles.length)];
+    if (ids != cletra  && !ids.includes(cletra)  ){
+    	break;
+    }
+}
+	console.log("-----------------el aleatorio es ::" + cletra);
 
+    dataSource.executeQUERY(SELECT_LIBROS_ADD_LIST,{IDSN : idnum,IDNS : idnum, EDITOR : editnew, ISBNAU : cletra, TITULO : titlenew, RESE : resumnew, NOPAG : numpagina },function(bookList){});
+   
     });
-  };
-    var maxID = getMAx(this.bookList);
-    console.log("Id mayor ::" + JSON.stringify(maxID.id));
-    console.log("Nuevo Author :: " + authornew);
-    console.log("Nuevo Titulo :: " + titlenew);
-    console.log("Nuevo Editorial :: " + editnew);
-     for(var idx = maxID.id; idx < (maxID.id + 2); ++idx){
-          var newid = idx;
-          }
-      console.log("Nuevo ID :: " + newid);
-    this.bookList.push({id: newid, "title":titlenew, "author":authornew, "edit":editnew});
 }
 
 this.editBook = function(idparam,titlenew,authornew,editnew, cb){
@@ -223,7 +230,6 @@ dataSource.executeQUERY(SELECT_LIBROS_DATA_LIST,{},function(bookList){
                      }
                   }
 */
-            console.log("la lista temporal es:: -------------------------------------------------------------------------------------\n" );
             if (edit != false  ){
 
                      if (liboritem.edit.toLowerCase() != edit && !liboritem.edit.toLowerCase().includes(edit) && liboritem.edit.trim() != edit) {
