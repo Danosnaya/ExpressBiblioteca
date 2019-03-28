@@ -153,14 +153,10 @@ router.post('/:id/edit', function(req, res){
          var titlenew = req.body.Newtit;//!== undefined  ? req.body.Newtit : false;
          var editnew = req.body.Newedito;//!== undefined  ? req.body.Newedito : false;
          var authornew = req.body.Newauth;//!== undefined  ? req.body.Newauth : false;
-
-         var flag = false ;
-         flag = bookService.editBook(idparam,titlenew,authornew,editnew,function(itscorrect ){
-         return  itscorrect;
-         });
-
-         console.log("value "+ flag);
-         res.render('Princip', {formName:'Redireccionando a la pagina principal',idpag : idparam});
+         var pagnew = req.body.Newpag;
+         var resumnew = req.body.Newres
+            bookService.editBook(idparam,titlenew,authornew,editnew,pagnew,resumnew,function(){});
+         res.render('Princip', {formName:'Redireccionando a la pagina principal',idpag :idparam});
       /*   bookService.getList(function(books){
             var result = {};
             result.title ="Libros ";
