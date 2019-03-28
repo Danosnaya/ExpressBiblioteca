@@ -8,6 +8,8 @@
         <h3>Titulo: {{this.title}}</h3>
         <h3>Editorial :{{this.edit}}</h3>
         <h3> Author : {{this.author}}  </h3>
+        <h3> Numero de paginas : {{this.pag}}  </h3>
+        <h3> Breve descripcion del libro : {{this.resu}}  </h3>
 
     </ul>
     <a class="boton2" href="#openModal2">Editar</a>
@@ -41,6 +43,14 @@
                 <br>
                 <label for="Newauth">Nuevo author</label>
                 <input type="Text" name="Newauth"  value = "{{this.author}}">
+                <br>
+                <br>
+                <label for="Newpag">Numero de paginas</label>
+                <input type="Text" name="Newpag"  value = "{{this.pag}}">
+                <br>
+                <br>
+                <label for="Newres">Descripcion</label>
+                <input type="Text" name="Newres" style="width:300py;height:100px" value = "{{this.resu}}">
                 <br>
                 <br>
                 <input type="button" value="Cancel" onclick="location.href='http://localhost:3001/libros/{{this.id}}/detail';">
