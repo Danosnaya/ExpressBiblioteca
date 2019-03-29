@@ -32,10 +32,8 @@ var SELECT_LIBROS_DELETE_LIST = " delete from libros "
 var SELECT_LIBROS_ADD_LIST = " insert into editorial(id,nombre) values(IDSN,'EDITOR');"
                                + " insert into libros(isbn,titulo,resumen,numpaginas,editorial_id) values('ISBNAU','TITULO','RESE',NOPAG, IDNS);"
 
-var SELECT_LIBROS_EDIT_LIST = " UPDATE libros SET titulo = 'TITLEEDIT' WHERE titulo = 'TITLORI'; "
-                              + " UPDATE Editorial SET nombre = 'EDITEDIT' WHERE nombre = 'EDITORI';"
-                              + " UPDATE libros SET numpaginas = 'PAGEDIT' WHERE numpaginas = 'PAGORI';"
-                              + " UPDATE libros SET resumen = 'RESUEDIT' WHERE resumen = 'RESUORI';"
+var SELECT_LIBROS_EDIT_LIST = " UPDATE libros SET titulo = 'TITLEEDIT', numpaginas = PAGEDIT, resumen = 'RESUEDIT' WHERE isbn = 'IDORI'; "
+                              + " UPDATE Editorial SET nombre = 'EDITEDIT' WHERE id = EDIDORI;"
 
 this.getList= function (cb){
 //var temporalLis = [];
@@ -83,7 +81,6 @@ dataSource.executeQUERY(SELECT_LIBROS_DATA_LIST,{},function(bookList){
            dataSource.executeQUERY(SELECT_LIBROS_DELETE_LIST,{IDX:indx},function(bookList){});
 
             console.log("Los libros actuales son : " + JSON.stringify(bookList));
-           //bookList.splice(indx - 1,1);
 
     });
 }
@@ -168,32 +165,16 @@ for (var y = 0 ;y < bookList.length; y++){
 }
 
 this.editBook = function(idparam,titlenew,authornew,editnew,pagnew,resumnew){
-
-   // idguar= idparam;
-   // console.log("Conservando id original :: " +JSON.stringify(idguar));
-dataSource.executeQUERY(SELECT_LIBROS_DATA_LIST,{},function(bookList){
-var libroResponse = null ;
- var listTemp = bookList;
- libroResponse  = bookList.find(book => book.id == idparam);
- console.log("libro response ::" + JSON.stringify(libroResponse));
     console.log("IDparam ::" + idparam);
-    console.log("title origin ::" + libroResponse.title);
-    console.log("editorialorigin ::\n" + libroResponse.edit);
-    console.log("paginas origin ::" + libroResponse.pag);
-    console.log("Resumen origin ::" + libroResponse.resu);
-    //console.log("author origin ::" + titlenew);
-
-    console.log("titlenew ::" + titlenew);
-    console.log("authornew ::" + authornew);
-    console.log("editnew ::" + editnew);
-    console.log("paginasnew ::" + pagnew);
-    console.log("resumenew ::" + resumnew);
-    dataSource.executeQUERY(SELECT_LIBROS_EDIT_LIST,{
-    TITLORI : libroResponse.title, TITLEEDIT : titlenew, EDITORI : libroResponse.edit, EDITEDIT : editnew, PAGORI : libroResponse.pag, PAGEDIT : pagnew,RESUORI : libroResponse.resu, RESUEDIT : resumnew
-    },function(bookList){});
+    this.findById(idparam,function (libroResponse){
+        console.log ("estoy aqui..." +JSON.stringify(libroResponse));
+        dataSource.executeQUERY(SELECT_LIBROS_EDIT_LIST,{
+            TITLEEDIT : titlenew, EDITEDIT : editnew, PAGEDIT : pagnew,  RESUEDIT : resumnew, IDORI :idparam,EDIDORI : libroResponse.edit_id
+        },function(bookList){});
 
     });
-    }
+
+}
 
 this.BuscaBook = function (id,edit,title,cb){
 dataSource.executeQUERY(SELECT_LIBROS_DATA_LIST,{},function(bookList){

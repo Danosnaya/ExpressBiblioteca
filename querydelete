@@ -6,9 +6,10 @@ from libros as L
 join editorial as E on L.editorial_id = E.id 
 
 --Para editar el libro
-UPDATE libros SET titulo = 'Señales HR' WHERE titulo = 'Señales y Sistemas';
-UPDATE Editorial SET nombre = 'Porrua' WHERE nombre = 'Prentice';
-select L.isbn , L.titulo, E.id, E.nombre
-from libros as L
-join editorial as E on L.editorial_id = E.id 
-order by  L.isbn
+UPDATE libros SET titulo = 'Señales y sistemas ', numpaginas = 43, resumen = 'Holo'
+	WHERE isbn = 'b';
+UPDATE Editorial SET nombre = 'Humans Sys' WHERE id = 2 ;
+	select L.isbn , L.titulo, L.numpaginas , L.resumen, E.id, E.nombre
+	from libros as L
+	join editorial as E on L.editorial_id = E.id 
+	order by  L.isbn
