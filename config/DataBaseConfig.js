@@ -13,31 +13,38 @@ const connectionData = {
     port: 5432,
 };
 
- this.executeQUERY = function (query , params , cb){
+ this.executeQUERY = function (query , params,cb){
  const client = new Client(connectionData);
  var resultSet;
-var intryset = Object.entries(params) ;
-for (var nodo in intryset ){
-console.log ("key ["+ intryset [nodo][0]+"] value :: " + intryset [nodo][1]);
-  query = query.replace(intryset [nodo][0], intryset [nodo][1]);
+const query2 = {
+  name: 'get-name',
+  text: query,
+  values: params,
+  rowMode: 'Array'
 }
-console.log ( query );
+console.log (query2);
 
 client.connect()
-client.query(query)
+client.query(query2)
     .then(response => {
-                  resultSet =response.rows ;
-              console.log (" Query ["+query+"] \n Resultset :: "  + JSON.stringify (resultSet));
-         cb (resultSet);
+       resultSet =response.rows ;
+       console.log (">  Query ["+query+"] \n >  Resultset :: "  + JSON.stringify (resultSet));
+       cb (resultSet);
+       client.end()
+    })
+    .catch(e => console.error(e.stack))
+             .then(() => client.end())
 
-        client.end()
-    })
-    .catch(err => {
-        client.end()
-    })
+
+ }
+
+ this.consumeComplete = function(data){
+ console.log(data);
+    return data;
  }
 
 }
+
 
 exports.DataSource = DataSource;
 

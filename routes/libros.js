@@ -9,32 +9,22 @@ router.get('/', function(req, res, next) {
     var result = {};
     var result2 = [];
     bookService.getList(function(books){
-
-    console.log(" los libros son :: " + JSON.stringify(books));
-/*
-        for (var x = 0 ; x < books.length ; ++x){
-            bookService.getListauto(books[x].id, function(authors){
-               result2.push(authors);
-                console.log("--------------- Authoress ------------:: " + JSON.stringify(result2));
-            });
-
-        }
-        console.log("Esta linea Imprime result2 ------------:: " + JSON.stringify(result2));*/
-            result.title ="Libros ";
-            result.books = books;
-       //     result.author = result2;
-       //     console.log("--------------- libros ------------:: " + JSON.stringify(result));
+        console.log(" los libros son :: " + JSON.stringify(books));
+        bookService.getListauto(books, function (bookswithauthors){
+            result.title = "Libros ";
+            result.books = bookswithauthors;
+            console.log("Libros con authores son :: " + JSON.stringify(result));
             res.render('libros',result);
-} );
-
+        });
+    });
 });
 
 // ejemple de path params   :::   libros/1    libros/2
 router.get('/:id/detail', function (req, res, next) {
      var idparam = req.params.id;
     bookService.findById(idparam,function (libroResponse){
-    console.log ("estoy aqui..." +JSON.stringify(libroResponse));
-    res.render('detail',libroResponse);
+   // bookService
+       res.render('detail',libroResponse);
     });
     });
 

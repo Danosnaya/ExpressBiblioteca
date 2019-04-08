@@ -20,8 +20,8 @@ var SELECT_LIBROS_DATA_LIST_AUTOR = " select L.isbn, P.nombre as author , P.apel
                                    +" join libros_autores as LA on  LA.libros_id = L.isbn"
                                    +" join autores as A on A.id = LA.autor_id"
                                    +" join personas as P on p.curp = A.persona_curp"
-                                   +" where L.isbn = 'IDX' "
-                                   //+"order by  L.isbn"
+                                   +" where L.isbn = $1 "
+                                   //+" order by  L.isbn "
 
 var SELECT_LIBROS_DELETE_LIST = " delete from libros "
                                  + " where isbn = 'IDX'; "
@@ -30,34 +30,43 @@ var SELECT_LIBROS_DELETE_LIST = " delete from libros "
                                  + " join editorial as E on L.editorial_id = E.id "
 
 var SELECT_LIBROS_ADD_LIST = " insert into editorial(id,nombre) values(IDSN,'EDITOR');"
-                               + " insert into libros(isbn,titulo,resumen,numpaginas,editorial_id) values('ISBNAU','TITULO','RESE',NOPAG, IDNS);"
+                             + " insert into libros(isbn,titulo,resumen,numpaginas,editorial_id) values('ISBNAU','TITULO','RESE',NOPAG, IDNS);"
 
 var SELECT_LIBROS_EDIT_LIST = " UPDATE libros SET titulo = 'TITLEEDIT', numpaginas = PAGEDIT, resumen = 'RESUEDIT' WHERE isbn = 'IDORI'; "
                               + " UPDATE Editorial SET nombre = 'EDITEDIT' WHERE id = EDIDORI;"
 
+
+this.getListauto = function (books,cb){
+books.forEach (function (book)  {
+ book.authors = this.getAuthorByBook(book.id,function(authors){
+ console.log("authors"+ authors );
+ });
+})
+
+       cb (books);
+   //.then(function(){ cb(book)});
+}
+
+
+this.getAuthorByBook = function  (id,cb){
+dataSource.executeQUERY(SELECT_LIBROS_DATA_LIST_AUTOR ,id,function(authors){
+     return cb (authors);
+      });}
+
 this.getList= function (cb){
 //var temporalLis = [];
-    dataSource.executeQUERY(SELECT_LIBROS_DATA_LIST,{},function(bookList){
-    for (var x = 0 ; x < bookList.length ; ++x){
-        dataSource.executeQUERY(SELECT_LIBROS_DATA_LIST_AUTOR ,{IDX:bookList[x].id},function(autorList){
-            bookList[x].author = autorList;
-            //temporalLis.push(autorList);
-           // console.log(" <<<<< Lista de libros >>>>>" +  JSON.stringify(bookList.title));
-        });
-    }
+    dataSource.executeQUERY(SELECT_LIBROS_DATA_LIST,[],function(bookList){
+   /* for (var x = 0 ; x < bookList.length ; ++x){
+      var authorList2 =   this.getauthor(bookList[x].id);
+
+        console.log ("list :: "+ JSON.stringify(authorList2));
+         bookList[x].author = authorList2;
+        console.log("final  :::: " + JSON.stringify(bookList[x])  );
+    }*/
     //console.log("  --------------------- Regreso al For --------------------" +  JSON.stringify( bookList.author ));
     cb (bookList);
     });
 }
-
-
-this.getListauto = function (id,cb){
-    dataSource.executeQUERY(SELECT_LIBROS_DATA_LIST_AUTOR ,{IDX:id},function(autorList){
-    cb(autorList);
-    }  );
-}
-
-
 
 this.findById = function (idparam,cb){
  dataSource.executeQUERY(SELECT_LIBROS_DATA_LIST,{},function(bookList){

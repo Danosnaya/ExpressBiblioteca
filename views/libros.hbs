@@ -12,8 +12,12 @@
     {{#each books}}
     <a href="http://localhost:3001/libros/{{this.id}}/detail">
         <h4>Titulo :{{this.title}}</h4> <p>Editorial: {{this.edit}}  </p>
+            <ul>
+                {{#each authors}}
+                <h4> Author: {{this.author}} - {{this.author2}} - {{this.author3}}</h4>
+                {{/each}}
 
-           <ul> <p> Author: {{this.author}} - {{this.author2}} - {{this.author3}}</p> </ul>
+           </ul>
 
     </a>
     {{/each}}
