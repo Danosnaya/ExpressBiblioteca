@@ -7,16 +7,12 @@ var bookService = new BookService();
 
 router.get('/', function(req, res, next) {
     var result = {};
-    var result2 = [];
-    bookService.getList(function(books){
-        console.log(" los libros son :: " + JSON.stringify(books));
-        bookService.getListauto(books, function (bookswithauthors){
-            result.title = "Libros ";
-            result.books = bookswithauthors;
-            console.log("Libros con authores son :: " + JSON.stringify(result));
-            res.render('libros',result);
-        });
-    });
+    result.title = "Libros ";
+    result.books =  bookService.getList();
+    //bookService.getListauto(result.books)
+   //result.books =  bookService.getListauto(result.books);
+    console.log("Libros con authores son :: " + JSON.stringify(result));
+    res.render('libros',result);
 });
 
 // ejemple de path params   :::   libros/1    libros/2

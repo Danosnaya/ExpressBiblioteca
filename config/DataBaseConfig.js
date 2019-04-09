@@ -1,47 +1,49 @@
-const { Client } = require('pg');
+const {Client} = require('pg');
 
 
+DataSource = function () {
 
-DataSource = function (){
 
+    const connectionData = {
+        user: 'postgres',
+        host: 'localhost',
+        database: 'biblioteca',
+        password: 'docker',
+        port: 5432,
+    };
 
-const connectionData = {
-    user: 'nomastrata',
-    host: '',
-    database: 'biblioteca',
-    password: 'Kh@rt0um',
-    port: 5432,
-};
+    this.executeQUERY = function (query, params, cb) {
+        const client = new Client(connectionData);
+        var resultSet;
+        const query2 = {
+            name: 'get-name',
+            text: query,
+            values: params,
+            rowMode: 'Array'
+        }
+        console.log(query2);
 
- this.executeQUERY = function (query , params,cb){
- const client = new Client(connectionData);
- var resultSet;
-const query2 = {
-  name: 'get-name',
-  text: query,
-  values: params,
-  rowMode: 'Array'
-}
-console.log (query2);
-
-client.connect()
-client.query(query2)
-    .then(response => {
-       resultSet =response.rows ;
-       console.log (">  Query ["+query+"] \n >  Resultset :: "  + JSON.stringify (resultSet));
-       cb (resultSet);
-       client.end()
+        client.connect()
+        client.query(query2)
+            .then(response => {
+            resultSet = response.rows;
+        console.log("\n \n>  Query [" + query + "] \n \n>  Resultset :: " + JSON.stringify(resultSet));
+        cb(resultSet);
+        client.end()
     })
-    .catch(e => console.error(e.stack))
-             .then(() => client.end())
+    .
+        catch(e => console.error(e.stack)
+    )
+    .
+        then(() => client.end()
+    )
 
+    }
 
- }
-
- this.consumeComplete = function(data){
- console.log(data);
-    return data;
- }
+    this.consumeComplete = function (data) {
+        console.log(data);
+        return data;
+    }
 
 }
 
