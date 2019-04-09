@@ -23,8 +23,7 @@ DataSource2 = function () {
 
 
     this.customReturn = function (data){
-        console.log(data);
-        return data;
+         return data;
     }
 
 }

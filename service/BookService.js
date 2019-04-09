@@ -49,12 +49,8 @@ BookService = function () {
     }
 
 
-    this.getList = function () {
-      var  books = bookPersistance.getBookList( );
-        console.log("servicio");
-
-        console.log(books);
-       return books;
+    this.getList = function (cb ) {
+       return bookPersistance.getBookList( ).then(res => cb(res));
 
     }
 

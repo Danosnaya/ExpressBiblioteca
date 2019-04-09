@@ -16,6 +16,18 @@ var SELECT_LIBROS_DATA_LIST_AUTOR = " select L.isbn, P.nombre as author , P.apel
 
 BookPersistance = function () {
 
+    const {Client} = require('pg');
+
+
+
+    const connectionData = {
+        user: 'postgres',
+        host: 'localhost',
+        database: 'biblioteca',
+        password: 'docker',
+        port: 5432,
+    };
+
     const queryOptions = {
         text: "query",
         values: []
@@ -24,15 +36,11 @@ BookPersistance = function () {
     this.getBookList = function () {
 
         queryOptions.text=SELECT_LIBROS_DATA_LIST;
-        queryOptions.values=[]
-        var books = dataSource.query(queryOptions);
-        console.log("persistence");
-        console.log(books);
-        return books ;
-
-
+        queryOptions.values=[];
+        return   dataSource.query(queryOptions);
 
     }
+
 
     this.getAuthorByBook = function (id) {
 
@@ -42,7 +50,6 @@ BookPersistance = function () {
         return dataSource.query(queryOptions );
 
      }
-
 
 
  }
