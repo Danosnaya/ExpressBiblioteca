@@ -6,15 +6,20 @@ var bookService = new BookService();
 
 
 router.get('/', function(req, res, next) {
-    var result = {};
        bookService.getList(function (books ){
+           var result = {};
            result.title = "Libros ";
-           result.books =  bookService.getListauto(books, function () {
-               
-           });
-           
+           result.books =  books;
            res.render('libros',result);
-       });
+});
+});
+
+
+router.get('/:id/authors' ,function(req,res ,next) {
+    var isbn = req.params.id;
+    bookService.getListauto( isbn ,function (authors) {
+        res.send(authors);
+    });
 });
 
 // ejemple de path params   :::   libros/1    libros/2

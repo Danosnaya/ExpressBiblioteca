@@ -38,20 +38,13 @@ var SELECT_LIBROS_EDIT_LIST = " UPDATE libros SET titulo = 'TITLEEDIT', numpagin
 BookService = function () {
 
 
-    this.getListauto = function (books) {
-        for ( var index in books)  {
-            console.log( books[index]);
-            books[index].authors =[];
-            books[index].authors =bookPersistance.getAuthorByBook( books[index].id);
-         };
-
-       return books;
+    this.getListauto = function (id, cb) {
+       return bookPersistance.getAuthorByBook(id).then(res => cb(res));
     }
 
 
     this.getList = function (cb ) {
-       return bookPersistance.getBookList( ).then(res => cb(res));
-
+       return bookPersistance.getBookList().then(res => cb(res));
     }
 
     this.findById = function (idparam, cb) {
