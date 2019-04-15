@@ -48,13 +48,7 @@ BookService = function () {
     }
 
     this.findById = function (idparam, cb) {
-        dataSource.executeQUERY(SELECT_LIBROS_DATA_LIST, {}, function (bookList) {
-            var libroResponse = null;
-            var listTemp = bookList;
-            libroResponse = bookList.find(book => book.id == idparam);
-
-            cb(libroResponse)
-        });
+        return bookPersistance.idfind(idparam).then(res => cb(res));
     }
 
     this.DeleteBook = function (idnew) {

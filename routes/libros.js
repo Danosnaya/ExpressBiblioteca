@@ -24,12 +24,11 @@ router.get('/:id/authors' ,function(req,res ,next) {
 
 // ejemple de path params   :::   libros/1    libros/2
 router.get('/:id/detail', function (req, res, next) {
-     var idparam = req.params.id;
-    bookService.findById(idparam,function (libroResponse){
-   // bookService
-       res.render('detail',libroResponse);
+        var idparam = req.params.id;
+        bookService.findById(idparam , function (libroResponse){
+        res.render('detail',libroResponse[0]);
     });
-    });
+});
 
 // query params   libros/search?author="fulanito"  or libros/search?id=3&editorial=""
 router.get('/search', function (req, res, next) {

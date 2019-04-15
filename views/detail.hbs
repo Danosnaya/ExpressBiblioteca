@@ -4,9 +4,9 @@
     <h1>Detalles del libro {{this.id}}</h1>
     <ul>
         <h2> ID : {{this.id}}</h2>
-        <h3>Titulo: {{this.title}}</h3>
-        <h3>Editorial :{{this.edit}}</h3>
-        <h3> Author : {{this.author}}  </h3>
+        <h3> Titulo: {{this.title}}</h3>
+        <h3> Editorial :{{this.edit}}</h3>
+        <h3> Autor: {{this.author}} {{this.author2}} {{this.author3}} </h3>
         <h3> Numero de paginas : {{this.pag}}  </h3>
         <h3> Breve descripcion del libro : {{this.resu}}  </h3>
 
@@ -44,7 +44,7 @@
                 <br>
                 <br>
                 <label for="Newauth">Nuevo author</label>
-                <input type="Text" name="Newauth"  value = "{{this.author}}">
+                <input type="Text" name="Newauth"  value = "{{this.author}} {{this.author2}} {{this.author3}}">
                 <br>
                 <br>
                 <label for="Newpag">Numero de paginas</label>

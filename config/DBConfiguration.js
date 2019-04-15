@@ -5,10 +5,10 @@ DataSource2 = function () {
 
 
     const connectionData = {
-        user: 'postgres',
-        host: 'localhost',
+        user: 'nomastrata',
+        host: '',
         database: 'biblioteca',
-        password: 'docker',
+        password: 'Kh@rt0um',
         port: 5432,
     };
 
