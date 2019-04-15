@@ -1,115 +1,56 @@
-
-var bookList =[];
-
-getlist();
+var DataSource2 = require('./../config/DBConfiguration.js').DataSource2;
+var dataSource = new DataSource2();
 
 
-function addBook(titlenew, authornew, editnew){
-  var titlenew = req.body.Titlenew;
-  var authornew = req.body.Authornew;
-  var editnew = req.body.Editorialnew;
+var SELECT_LIBROS_DATA_LIST = " select L.isbn as id, L.titulo as title,  L.numpaginas as pag , L.resumen as resu, E.id as edit_id, E.nombre as edit "
+    + " from libros as L"
+    + " join editorial as E on L.editorial_id = E.id "
+    + " order by  L.isbn ";
+
+var SELECT_LIBROS_DATA_LIST_AUTOR = " select L.isbn, P.nombre as author , P.apellido_paterno as author2 , P.apellido_materno as author3 "
+    + " from libros as L"
+    + " join libros_autores as LA on  LA.libros_id = L.isbn"
+    + " join autores as A on A.id = LA.autor_id"
+    + " join personas as P on p.curp = A.persona_curp"
+    + " where L.isbn = $1 ";
 
 
-   var maxID =getMAx(myobj.libros);
-  console.log("Id mayor ::" + JSON.stringify(maxID.id));
-  console.log("Nuevo Author :: " + authornew);
-  console.log("Nuevo Titulo :: " + titlenew);
-  console.log("Nuevo Editorial :: " + editnew);
-   for(var idx = maxID.id; idx < (maxID.id + 2); ++idx){
-        var newid = idx;
-        }
-    console.log("Nuevo ID :: " + newid);
-  myobj.libros.push({id: newid, "title":titlenew, "author":authornew, "edit": editnew});
-  res.render('libros',myobj);
-    //{libros :[{"title": titlenew, "author": authornew, "edit": editnew}]};
-};
+var SELECT_LIBROS_DATA_LIST_ID = " select L.isbn as id, L.titulo as title,  L.numpaginas as pag , L.resumen as resu, E.id as edit_id, E.nombre as edit, "
+        + " P.nombre as author , P.apellido_paterno as author2 , P.apellido_materno as author3 "
+        + " from libros as L"
+        + " join libros_autores as LA on  LA.libros_id = L.isbn"
+        + " join autores as A on A.id = LA.autor_id"
+        + " join personas as P on p.curp = A.persona_curp"
+        + " join editorial as E on L.editorial_id = E.id "
+        + " where L.isbn = $1 ";
 
-function findBook(idparam ){
- console.log("param id :: " +  req.params.id );
- var idparam = req.params.id;
- var listTemp =myobj.libros;
- var libroResponse = null ;
- for (var item in listTemp){
- console.log("comparando con  " + listTemp[item].id);
+BookPersistance = function () {
 
-    if (listTemp[item].id == idparam){
-    console.log("ya lo encontre");
-      libroResponse = listTemp[item];
-      break;
+    const queryOptions = {
+        text: "query",
+        values: []
+     }
+
+    this.getBookList = function () {
+        queryOptions.text=SELECT_LIBROS_DATA_LIST;
+        queryOptions.values=[];
+        return   dataSource.query(queryOptions );
     }
-   }
- if(libroResponse != null){
-    res.send(libroResponse);
-    //res.render()
-   }
- else{
-   res.status(404);
-   }
 
 
-};
+    this.getAuthorByBook = function (id) {
+        queryOptions.text=SELECT_LIBROS_DATA_LIST_AUTOR;
+        queryOptions.values=[id]
+        return dataSource.query(queryOptions );
+    }
 
-function filter(parameters){
-console.log("data " + JSON.stringify(req.query));
-    var libroResponse = null ;
-
-    if(req.query.author != undefined || req.query.id != undefined || req.query.edit!= undefined ){
-
-        var id = req.query.id!== undefined  ? req.query.id : false;
-        var author = req.query.author!== undefined ? req.query.author : false;
-        var edit = req.query.edit!== undefined? req.query.edit:false;
-        var listTemp = myobj.libros;
-
-
-       var istrueid = true  ;
-       var istruesuthor = true  ;
-       var istrueedit = true  ;
-
-       for (var item in listTemp){
-       libroResponse =listTemp[item];
-       if (id != false ){
-          if (libroResponse.id != id  ){
-             istrueid = false;
-          }
-           else {
-              istrueid = true ;
-           }
-       }
-
-        if (author != false ){
-                 if (libroResponse.author != author  ){
-                                 istruesuthor = false;
-                 } else {}
-                 istruesuthor= true ;
-              }
+    this.idfind = function (idparam) {
+        queryOptions.text=SELECT_LIBROS_DATA_LIST_ID;
+        queryOptions.values=[idparam]
+        return   dataSource.query(queryOptions );
+    }
 
 
-        if (edit != false ){
-                 if (libroResponse.edit != edit  ){
-                    istrueedit = false;
-                 } else {
-                    istrueedit = true
-                 }
-              }
+ }
 
-
-          if ( istrueid && istruesuthor && istrueedit){
-                    break;
-
-          } else {
-            libroResponse = null ;
-          }
-
-        }
-
-
-        res.send(libroResponse);
-
-
-} else {
-        res.send(libroResponse);
-
-}
-}
-
-delete(id ){}
+exports.BookPersistance =BookPersistance;

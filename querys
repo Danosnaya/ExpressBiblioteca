@@ -7,12 +7,14 @@ join editorial as E on L.editorial_id = E.id
 
 
 -- consulta de autores por libro 
-select L.isbn,A.id , P.nombre , P.apellido_paterno, P.apellido_materno
+select L.isbn, L.titulo, E.id, E.nombre, 
+P.nombre , P.apellido_paterno, P.apellido_materno
 from libros as L
 join libros_autores as LA on  LA.libros_id = L.isbn
 join autores as A on A.id = LA.autor_id 
 join personas as P on p.curp = A.persona_curp
-where L.isbn = 'a'
+join editorial as E on L.editorial_id = E.id 
+--where L.isbn = 'a'
 order by  L.isbn
 
 

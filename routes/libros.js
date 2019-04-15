@@ -4,57 +4,31 @@ var router = express.Router();
 var BookService = require('./../service/BookService.js').BookService;
 var bookService = new BookService();
 
-/*
-client.connect()
-  client.query('SELECT * FROM table')
-    .then(response => {
-        console.log(response.rows)
-        client.end()
-    })
 
-    .catch(err => {
-        client.end()
-    })
-
-*/
-/* GET home page. */
-//bookService.getListauto(function(author){
-     // console.log("result es :: " +JSON.stringify(result))
-    //  var result2 = {};
-    //  result2.author = author;
-       //  } );
 router.get('/', function(req, res, next) {
-    var result = {};
-    var result2 = [];
-    bookService.getList(function(books){
+       bookService.getList(function (books ){
+           var result = {};
+           result.title = "Libros ";
+           result.books =  books;
+           res.render('libros',result);
+});
+});
 
-    console.log(" los libros son :: " + JSON.stringify(books));
-/*
-        for (var x = 0 ; x < books.length ; ++x){
-            bookService.getListauto(books[x].id, function(authors){
-               result2.push(authors);
-                console.log("--------------- Authoress ------------:: " + JSON.stringify(result2));
-            });
 
-        }
-        console.log("Esta linea Imprime result2 ------------:: " + JSON.stringify(result2));*/
-            result.title ="Libros ";
-            result.books = books;
-       //     result.author = result2;
-       //     console.log("--------------- libros ------------:: " + JSON.stringify(result));
-            res.render('libros',result);
-} );
-
+router.get('/:id/authors' ,function(req,res ,next) {
+    var isbn = req.params.id;
+    bookService.getListauto( isbn ,function (authors) {
+        res.send(authors);
+    });
 });
 
 // ejemple de path params   :::   libros/1    libros/2
 router.get('/:id/detail', function (req, res, next) {
-     var idparam = req.params.id;
-    bookService.findById(idparam,function (libroResponse){
-    console.log ("estoy aqui..." +JSON.stringify(libroResponse));
-    res.render('detail',libroResponse);
+        var idparam = req.params.id;
+        bookService.findById(idparam , function (libroResponse){
+        res.render('detail',libroResponse[0]);
     });
-    });
+});
 
 // query params   libros/search?author="fulanito"  or libros/search?id=3&editorial=""
 router.get('/search', function (req, res, next) {
@@ -119,22 +93,6 @@ router.post('/busqueda', function(req, res, next){
 
    });
 
-   /*
- get   /libros/{id}/edit
-   find (id)
-
-    existe  render.(edit,{libro})
-    no existe  error
-
-
-put /libros/{id}/edit?athor & edith? title
-
-  update
-
-   redirect  /libors /id/detail */
-
-
-
 
 router.get('/:id/edit', function(req, res, next){
         var idparam = req.params.id;
@@ -157,12 +115,7 @@ router.post('/:id/edit', function(req, res){
          var resumnew = req.body.Newres
             bookService.editBook(idparam,titlenew,authornew,editnew,pagnew,resumnew,function(){});
          res.render('Princip', {formName:'Redireccionando a la pagina principal',idpag :idparam});
-      /*   bookService.getList(function(books){
-            var result = {};
-            result.title ="Libros ";
-            result.books = books;
-            res.render('libros',result);
-            });*/
+
 });
 
 router.get('/:id/eliminar', function(req, res, next){
@@ -178,21 +131,4 @@ router.get('/:id/eliminar', function(req, res, next){
     });
 });
 
-/*
-router.get('/eliminar', function(req, res, next){
-    res.render('Eliminar', { title: 'Eliminar un libro'});
-});
-
-router.post('/eliminar', function(req, res){
-  var idnew = req.body.IDnew;
-  bookService.findById(idnew,function (libroResponse){
-  if (libroResponse != null){
-    bookService.DeleteBook(idnew,function(){});
-    res.render('redirecc', {formName:'Redireccionando a la pagina principal'});
-     }
-  else {
-        res.status(404).send('Not Found');
-  }
-});
-});*/
 module.exports = router;
