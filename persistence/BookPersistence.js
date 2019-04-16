@@ -24,6 +24,9 @@ var SELECT_LIBROS_DATA_LIST_ID = " select L.isbn as id, L.titulo as title,  L.nu
         + " join editorial as E on L.editorial_id = E.id "
         + " where L.isbn = $1 ";
 
+var SELECT_LIBROS_ADD_LIST = " insert into editorial(id,nombre) values($1, $2);"
+        + " insert into libros(isbn,titulo,resumen,numpaginas,editorial_id) values($3, $4, $5, $6, $7);" ;
+
 BookPersistance = function () {
 
     const queryOptions = {
@@ -50,7 +53,11 @@ BookPersistance = function () {
         return   dataSource.query(queryOptions );
     }
 
-
+    this.addbookPer = function (idnum,editnew,cletra,titlenew,numpagina,resumnew){
+        queryOptions.text = SELECT_LIBROS_ADD_LIST;
+        queryOptions.values = [idnum, editnew, cletra, titlenew, resumnew, numpagina,idnum]
+    return   dataSource.query(queryOptions);
+    }
  }
 
 exports.BookPersistance =BookPersistance;

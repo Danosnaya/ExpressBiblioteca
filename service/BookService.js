@@ -12,8 +12,6 @@ var SELECT_LIBROS_DELETE_LIST = " delete from libros "
     + " from libros as L "
     + " join editorial as E on L.editorial_id = E.id "
 
-var SELECT_LIBROS_ADD_LIST = " insert into editorial(id,nombre) values(IDSN,'EDITOR');"
-    + " insert into libros(isbn,titulo,resumen,numpaginas,editorial_id) values('ISBNAU','TITULO','RESE',NOPAG, IDNS);"
 
 var SELECT_LIBROS_EDIT_LIST = " UPDATE libros SET titulo = 'TITLEEDIT', numpaginas = PAGEDIT, resumen = 'RESUEDIT' WHERE isbn = 'IDORI'; "
     + " UPDATE Editorial SET nombre = 'EDITEDIT' WHERE id = EDIDORI;"
@@ -54,16 +52,15 @@ BookService = function () {
         });
     }
 
-    this.addBook = function (titlenew, editnew, numpagina, resumnew) {
-        console.log("aqui Llego ::");
+    this.addBook = function (bookscomplete, titlenew, editnew, numpagina, resumnew ) {
         var ids = [];
         var idposibles = new Array('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z');
-        dataSource.executeQUERY(SELECT_LIBROS_DATA_LIST, {}, function (bookList) {
-            for (var y = 0; y < bookList.length; y++) {
-                console.log("----------------------------------------------------los id son: " + JSON.stringify(bookList[y].id));
-                ids.push(bookList[y].id);
+
+            for (var y = 0; y < bookscomplete.length; y++) {
+                console.log("----------------------------------------------------los id son: " + JSON.stringify(bookscomplete[y].id));
+                ids.push(bookscomplete[y].id);
             }
-            var idnum = bookList.length + 1;
+            var idnum = bookscomplete.length + 1;
             console.log("El numero de id es :: " + idnum);
             for (var x = 0; x < 27; x++) {
                 var cletra = idposibles[Math.floor(Math.random() * idposibles.length)];
@@ -71,20 +68,8 @@ BookService = function () {
                     break;
                 }
             }
-            console.log("-----------------el aleatorio es ::" + cletra);
+            bookPersistance.addbookPer(idnum,editnew,cletra,titlenew,numpagina,resumnew);
 
-            dataSource.executeQUERY(SELECT_LIBROS_ADD_LIST, {
-                IDSN: idnum,
-                IDNS: idnum,
-                EDITOR: editnew,
-                ISBNAU: cletra,
-                TITULO: titlenew,
-                RESE: resumnew,
-                NOPAG: numpagina
-            }, function (bookList) {
-            });
-
-        });
     }
 
     this.editBook = function (idparam, titlenew, authornew, editnew, pagnew, resumnew) {
