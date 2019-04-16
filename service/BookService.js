@@ -6,20 +6,6 @@ var dataSource = new DataSource();
 var BookPersistance = require('./../persistence/BookPersistence.js').BookPersistance;
 var bookPersistance = new BookPersistance();
 
-var SELECT_LIBROS_DATA_LIST = "select L.isbn as id, L.titulo as title,  L.numpaginas as pag , L.resumen as resu, E.id as edit_id, E.nombre as edit"
-    + " from libros as L"
-    + " join editorial as E on L.editorial_id = E.id "
-    + " order by  L.isbn "
-
-
-var SELECT_LIBROS_DATA_LIST_AUTOR = " select L.isbn, P.nombre as author , P.apellido_paterno as author2 , P.apellido_materno as author3 "
-    + " from libros as L"
-    + " join libros_autores as LA on  LA.libros_id = L.isbn"
-    + " join autores as A on A.id = LA.autor_id"
-    + " join personas as P on p.curp = A.persona_curp"
-    + " where L.isbn = $1 "
-//+" order by  L.isbn "
-
 var SELECT_LIBROS_DELETE_LIST = " delete from libros "
     + " where isbn = 'IDX'; "
     + " select L.isbn , L.titulo, E.id, E.nombre "
@@ -31,8 +17,6 @@ var SELECT_LIBROS_ADD_LIST = " insert into editorial(id,nombre) values(IDSN,'EDI
 
 var SELECT_LIBROS_EDIT_LIST = " UPDATE libros SET titulo = 'TITLEEDIT', numpaginas = PAGEDIT, resumen = 'RESUEDIT' WHERE isbn = 'IDORI'; "
     + " UPDATE Editorial SET nombre = 'EDITEDIT' WHERE id = EDIDORI;"
-
-
 
 
 BookService = function () {
@@ -68,61 +52,6 @@ BookService = function () {
             console.log("Los libros actuales son : " + JSON.stringify(bookList));
 
         });
-    }
-
-    this.findBook = function (id, author, edit, cb) {
-        var libroResponse = [];
-        var liboritem = null;
-        var listTemp = this.bookList;
-        var istrueid = true;
-        var istrueauthor = true;
-        var istrueedit = true;
-        for (var item in listTemp) {
-            liboritem = listTemp[item];
-
-            console.log("compare :: " + liboritem.author.includes(author));
-
-
-            if (id != false) {
-                if (liboritem.id != id) {
-                    istrueid = false;
-                }
-                else {
-                    istrueid = true;
-                }
-            }
-
-            if (author != false) {
-                if (liboritem.author != author && !liboritem.author.includes(author)) {
-                    istrueauthor = false;
-                } else {
-                    istrueauthor = true;
-                }
-            }
-
-
-            if (edit != false) {
-                if (liboritem.edit != edit && !liboritem.edit.includes(edit)) {
-                    istrueedit = false;
-                } else {
-                    istrueedit = true
-                }
-            }
-
-
-            if (istrueid && istrueauthor && istrueedit) {
-                if (liboritem) {
-                    libroResponse.push(liboritem);
-                }
-                else {
-                    break;
-                }
-            } else {
-                liboritem = null;
-            }
-
-        }
-        cb(libroResponse);
     }
 
     this.addBook = function (titlenew, editnew, numpagina, resumnew) {
@@ -176,21 +105,20 @@ BookService = function () {
 
     }
 
-    this.BuscaBook = function (id, edit, title, cb) {
-        dataSource.executeQUERY(SELECT_LIBROS_DATA_LIST, {}, function (bookList) {
+    this.BuscaBook = function (bookscomplete,id, edit, title, cb) {
+
             var libroResponse = [];
             var liboritem = null;
-            var listTemp = bookList;
+            var listTemp = bookscomplete;
             var istrueid = true;
-            //  var istrueauthor = true  ;
+            //var istrueauthor = true  ;
             var istrueedit = true;
             var istruetitle = true;
 
-            console.log("libros :: " + JSON.stringify(bookList));
             for (var item in listTemp) {
-                /*   listTemp[item].author = listTemp[item].author.toLowerCase();
-                   listTemp[item].title = listTemp[item].title.toLowerCase();
-                   listTemp[item].edit = listTemp[item].edit.toLowerCase();*/
+              //  listTemp[item].author = listTemp[item].author.toLowerCase();
+                listTemp[item].title = listTemp[item].title.toLowerCase();
+                listTemp[item].edit = listTemp[item].edit.toLowerCase();
                 liboritem = listTemp[item];
 
                 if (id != false) {
@@ -202,17 +130,17 @@ BookService = function () {
                         istrueid = true;
                     }
                 }
-                /*
-                            if (author != false ){
 
-                                     if (liboritem.author.toLowerCase() != author && !liboritem.author.toLowerCase().includes(author) && liboritem.author.trim() != author){
-                                                     istrueauthor = false;
+               /* if (author != false ){
 
-                                     } else {
-                                     istrueauthor= true ;
-                                     }
-                                  }
-                */
+                     if (liboritem.author.toLowerCase() != author && !liboritem.author.toLowerCase().includes(author) && liboritem.author.trim() != author){
+                             istrueauthor = false;
+
+                     } else {
+                        istrueauthor= true ;
+                     }
+                }*/
+
                 if (edit != false) {
 
                     if (liboritem.edit.toLowerCase() != edit && !liboritem.edit.toLowerCase().includes(edit) && liboritem.edit.trim() != edit) {
@@ -235,7 +163,7 @@ BookService = function () {
 
                 if (istrueid || istrueedit || istruetitle) {
                     if (liboritem) {
-                        libroResponse.push(bookList[item]);
+                        libroResponse.push(bookscomplete[item]);
                     }
                     else {
                         break;
@@ -245,9 +173,8 @@ BookService = function () {
                 }
 
             }
-            console.log("el libro es: " + libroResponse)
             cb(libroResponse);
-        });
+
     }
 
 }
