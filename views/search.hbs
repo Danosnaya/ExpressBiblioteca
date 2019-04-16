@@ -1,13 +1,14 @@
 
 <input style="margin-left: 75%" type="button" value="Regresar" onclick="location.href='http://localhost:3001/libros/';" >
 
-<h1>Resultado de busqueda </h1>
+<h1>{{title}}</h1>
 <ul>
     {{#each libroResponse}}
-        <li><h3>ID: {{this.id}}</h3>
-            <h4>Titulo: {{this.title}}</h4>
-            <p>Editorial: {{this.edit}} </p>
-            <p>Author: {{this.author}}  </p>
-        </li>
+      <li><h3>ID: {{this.id}}</h3>
+      <h3> Titulo: {{this.title}}</h3>
+      <h3> Editorial :{{this.edit}}</h3>
+      <h3> Numero de paginas : {{this.pag}}  </h3>
+      <h3> Breve descripcion del libro : {{this.resu}}  </h3>
+      </li>
     {{/each}}
 </ul>
