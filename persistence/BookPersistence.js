@@ -24,8 +24,12 @@ var SELECT_LIBROS_DATA_LIST_ID = " select L.isbn as id, L.titulo as title,  L.nu
         + " join editorial as E on L.editorial_id = E.id "
         + " where L.isbn = $1 ";
 
-var SELECT_LIBROS_ADD_LIST = " insert into editorial(id,nombre) values($1, $2);"
-        + " insert into libros(isbn,titulo,resumen,numpaginas,editorial_id) values($3, $4, $5, $6, $7);" ;
+var SELECT_LIBROS_ADD_LIST_EDITO = " insert into editorial(id,nombre) values($1, $2);";
+var SELECT_LIBROS_ADD_LIST_BOOK = " insert into libros(isbn,titulo,resumen,numpaginas,editorial_id) values($1, $2, $3, $4, $5);" ;
+var SELECT_LIBROS_ADD_LIST_PERSON = " insert into personas(curp,nombre,apellido_paterno,apellido_materno,fecha_nacimiento) values($1, $2, $3, $4, $5);";
+var SELECT_LIBROS_ADD_LIST_AUTOR = " insert into autores(id,persona_curp,fechapubl,bibliografia) values ($1, $2, $3, 'Biografiy');";
+var SELECT_LIBROS_ADD_LIST_BOOK_AUTOR = " insert into libros_autores(id,autor_id,libros_id) values ($1, $2, $3);";
+
 
 BookPersistance = function () {
 
@@ -53,11 +57,36 @@ BookPersistance = function () {
         return   dataSource.query(queryOptions );
     }
 
-    this.addbookPer = function (idnum,editnew,cletra,titlenew,numpagina,resumnew){
-        queryOptions.text = SELECT_LIBROS_ADD_LIST;
-        queryOptions.values = [idnum, editnew, cletra, titlenew, resumnew, numpagina,idnum]
+    this.addbookPerEdito = function (idnum,editnew){
+        queryOptions.text = SELECT_LIBROS_ADD_LIST_EDITO;
+        queryOptions.values = [idnum, editnew]
     return   dataSource.query(queryOptions);
     }
+
+    this.addbookPerBook = function (cletra,titlenew,numpagina,resumnew,idnum){
+        queryOptions.text = SELECT_LIBROS_ADD_LIST_BOOK;
+        queryOptions.values = [cletra, titlenew, resumnew, numpagina,idnum]
+    return   dataSource.query(queryOptions);
+    }
+
+    this.addbookPerPerson = function (curp, authornew , apellpat , apellmat , randmese){
+         queryOptions.text = SELECT_LIBROS_ADD_LIST_PERSON;
+         queryOptions.values = [curp, authornew , apellpat , apellmat , randmese]
+    return   dataSource.query(queryOptions);
+    }
+
+    this.addbookPerAuthor = function (idnum, curp, fecha){
+         queryOptions.text = SELECT_LIBROS_ADD_LIST_AUTOR;
+         queryOptions.values = [idnum, curp, fecha]
+    return   dataSource.query(queryOptions);
+    }
+
+    this.addbookPerBookAuthor = function (idnumlibr,idnum, cletra){
+         queryOptions.text = SELECT_LIBROS_ADD_LIST_BOOK_AUTOR;
+         queryOptions.values = [idnumlibr,idnum, cletra]
+    return   dataSource.query(queryOptions);
+    }
+
  }
 
 exports.BookPersistance =BookPersistance;
