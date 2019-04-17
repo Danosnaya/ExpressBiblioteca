@@ -84,13 +84,14 @@ router.post('/busqueda', function(req, res, next){
   var resumnew = req.body.Resume;
   var numpagina = req.body.Numpag;
   var authornew = req.body.Authornew;
+  var apellpat = req.body.ApellPat;
+  var apellmat = req.body.ApellMat;
   var editnew = req.body.Editorialnew;
-  bookService.addBook(titlenew,editnew,numpagina,resumnew,function(){
-  });
+  bookService.getList(function (bookscomplete){
+    bookService.addBook(bookscomplete,titlenew,editnew,numpagina,resumnew,authornew,apellpat,apellmat);
     res.render('redirecc', {formName:'Redireccionando a la pagina principal'});
-
    });
-
+});
 
 router.get('/:id/edit', function(req, res, next){
         var idparam = req.params.id;

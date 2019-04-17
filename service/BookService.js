@@ -12,8 +12,6 @@ var SELECT_LIBROS_DELETE_LIST = " delete from libros "
     + " from libros as L "
     + " join editorial as E on L.editorial_id = E.id "
 
-var SELECT_LIBROS_ADD_LIST = " insert into editorial(id,nombre) values(IDSN,'EDITOR');"
-    + " insert into libros(isbn,titulo,resumen,numpaginas,editorial_id) values('ISBNAU','TITULO','RESE',NOPAG, IDNS);"
 
 var SELECT_LIBROS_EDIT_LIST = " UPDATE libros SET titulo = 'TITLEEDIT', numpaginas = PAGEDIT, resumen = 'RESUEDIT' WHERE isbn = 'IDORI'; "
     + " UPDATE Editorial SET nombre = 'EDITEDIT' WHERE id = EDIDORI;"
@@ -54,37 +52,51 @@ BookService = function () {
         });
     }
 
-    this.addBook = function (titlenew, editnew, numpagina, resumnew) {
-        console.log("aqui Llego ::");
+    this.addBook = function (bookscomplete, titlenew, editnew, numpagina, resumnew , authornew , apellpat , apellmat) {
         var ids = [];
         var idposibles = new Array('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z');
-        dataSource.executeQUERY(SELECT_LIBROS_DATA_LIST, {}, function (bookList) {
-            for (var y = 0; y < bookList.length; y++) {
-                console.log("----------------------------------------------------los id son: " + JSON.stringify(bookList[y].id));
-                ids.push(bookList[y].id);
+
+            for (var y = 0; y < bookscomplete.length; y++) {
+                ids.push(bookscomplete[y].id);
             }
-            var idnum = bookList.length + 1;
-            console.log("El numero de id es :: " + idnum);
+            var idnum = bookscomplete.length + 1;
+            var idnumlibr = idnum + 1;
             for (var x = 0; x < 27; x++) {
                 var cletra = idposibles[Math.floor(Math.random() * idposibles.length)];
                 if (ids != cletra && !ids.includes(cletra)) {
                     break;
                 }
             }
-            console.log("-----------------el aleatorio es ::" + cletra);
+            var caracteres = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            var curp = "";
+            var max = caracteres.length-1;
+            for (var i = 0; i<15; i++) {
+                curp += caracteres[ Math.floor(Math.random() * (max+1)) ];
+            }
+            var meseposibles = new Array('15 de Enero 1988', '12 de Febrero 1976', '21 de Marzo 1983', '30 de Abril 1991', '10 Mayo de 1989', '29 de Junio 1985', '31 de Julio 1975', '1 de Agosto 1982', '6 de Septiembre 1987', '15 de Octubre 1978', '21 de Noviembre 1984', '24 de Diciembre 1980');
+            for (var x = 0; x < 1; x++) {
+                  var randmese = meseposibles[Math.floor(Math.random() * idposibles.length)];
+            }
 
-            dataSource.executeQUERY(SELECT_LIBROS_ADD_LIST, {
-                IDSN: idnum,
-                IDNS: idnum,
-                EDITOR: editnew,
-                ISBNAU: cletra,
-                TITULO: titlenew,
-                RESE: resumnew,
-                NOPAG: numpagina
-            }, function (bookList) {
-            });
+            var mesepubli = new Array('15 de Enero 2001', '12 de Febrero 2002', '21 de Marzo 2004', '30 de Abril 2000', '10 Mayo de 1999', '29 de Junio 2006', '31 de Julio 1998', '1 de Agosto 2004', '6 de Septiembre 2001', '15 de Octubre 2007', '21 de Noviembre 2010', '24 de Diciembre 1998');
+            for (var x = 0; x < 1; x++) {
+                 var fecha = mesepubli[Math.floor(Math.random() * idposibles.length)];
+            }
 
-        });
+        bookPersistance.addbookPerEdito(idnum,editnew).then(res =>{
+                bookPersistance.addbookPerBook(cletra,titlenew,numpagina,resumnew,idnum).then(res =>{
+                        bookPersistance.addbookPerPerson(curp, authornew , apellmat , apellpat, randmese).then(res =>{
+                                bookPersistance.addbookPerAuthor(idnum, curp, fecha ).then(res => {
+                                        bookPersistance.addbookPerBookAuthor(idnumlibr,idnum, cletra).then(res => {cb (res)});
+                                cb (res)});
+                        cb (res)});
+                cb(res)});
+
+        cb(res)});
+
+
+
+
     }
 
     this.editBook = function (idparam, titlenew, authornew, editnew, pagnew, resumnew) {
