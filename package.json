@@ -1,17 +1,26 @@
 {
-  "name": "express-prueba",
-  "version": "0.0.0",
-  "private": true,
+  "name": "docker_web_app",
+  "version": "1.0.0",
+  "description": "Node.js on Docker",
   "scripts": {
     "start": "node ./bin/www"
   },
   "dependencies": {
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.9",
-    "express": "~4.16.0",
+    "express": "^4.16.4",
     "hbs": "^4.0.3",
     "http-errors": "~1.6.2",
     "morgan": "~1.9.0",
     "pg": "^7.8.2"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "Dockerzing"
+  },
+  "keywords": [
+    "Docker"
+  ],
+  "author": "Dan",
+  "license": "ISC"
 }
