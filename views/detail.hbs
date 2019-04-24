@@ -1,4 +1,4 @@
-    <input style="margin-left: 75%" type="button" value="Regresar" onclick="location.href='http://localhost:3001/libros/';" >
+    <input style="margin-left: 75%" type="button" value="Regresar" onclick="location.href='http://localhost:9192/libros/';" >
 
 <center>
     <h1>Detalles del libro {{this.id}}</h1>
@@ -20,8 +20,8 @@
             <a href="#close" title="Close" class="close">X</a>
             <h2>Advertencia</h2>
             <p>¿Seguro que desea eliminar el libro {{this.title}} ?
-            <input align="rigth" type="button" value="No" onclick="location.href='http://localhost:3001/libros/{{this.id}}/detail';">
-            <input style="margin-left: 2%" type="button" value="Si" onclick="location.href='http://localhost:3001/libros/{{this.id}}/eliminar';">
+            <input align="rigth" type="button" value="No" onclick="location.href='http://localhost:9192/libros/{{this.id}}/detail';">
+            <input style="margin-left: 2%" type="button" value="Si" onclick="location.href='http://localhost:9192/libros/{{this.id}}/eliminar';">
             </p>
         </div>
     </div>
@@ -55,7 +55,7 @@
                 <input type="Text" name="Newres" style="width:300py;height:100px" value = "{{this.resu}}">
                 <br>
                 <br>
-                <input type="button" value="Cancel" onclick="location.href='http://localhost:3001/libros/{{this.id}}/detail';">
+                <input type="button" value="Cancel" onclick="location.href='http://localhost:9192/libros/{{this.id}}/detail';">
                 <input style="margin-left: 2%" type="submit" value="Save" >
             </form>
         </div>

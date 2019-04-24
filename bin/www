@@ -10,9 +10,9 @@ var http = require('http');
 
 /**
  * Get port from environment and store in Express.
- */
+*/
 
-var port = 9193;
+var port = 9192;
 app.set('port', port);
 
 /**

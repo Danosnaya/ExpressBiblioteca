@@ -1,10 +1,12 @@
 FROM node:8
 WORKDIR /usr/src/app
 
-COPY package*.json ./ 
+COPY package*.json ./
 
 RUN npm install
-COPY . . 
+
+COPY . .
+VOLUME/usr/src/app
 
 EXPOSE "9192:9192"
 CMD [ "npm" , "start" ]
