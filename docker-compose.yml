@@ -1,0 +1,30 @@
+version: '3'
+services:
+  biblioteca:
+    build:
+      ./
+    depends_on:
+      - db
+    ports:
+      - "9192:9192"
+    volumes:
+      - ./:/usr/src/app
+    networks:
+      - bibliotecanetwork
+
+  db:
+    image: postgres:9.1
+    container_name: "my_postgres"
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: 1234567
+      POSTGRES_DB: biblioteca
+#      PGDATA: /var/lib/postgresql
+    volumes:
+      - ./postgress:/var/lib/postgresql
+    networks:
+      - bibliotecanetwork
+
+networks:
+  bibliotecanetwork:

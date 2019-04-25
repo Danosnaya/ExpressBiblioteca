@@ -8,7 +8,7 @@ DataSource = function () {
         user: 'postgres',
         host: 'localhost',
         database: 'biblioteca',
-        password: 'docker',
+        password: '1234567',
         port: 5432,
     };
 
