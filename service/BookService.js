@@ -6,16 +6,6 @@ var dataSource = new DataSource();
 var BookPersistance = require('./../persistence/BookPersistence.js').BookPersistance;
 var bookPersistance = new BookPersistance();
 
-var SELECT_LIBROS_DELETE_LIST = " delete from libros "
-    + " where isbn = 'IDX'; "
-    + " select L.isbn , L.titulo, E.id, E.nombre "
-    + " from libros as L "
-    + " join editorial as E on L.editorial_id = E.id "
-
-
-var SELECT_LIBROS_EDIT_LIST = " UPDATE libros SET titulo = 'TITLEEDIT', numpaginas = PAGEDIT, resumen = 'RESUEDIT' WHERE isbn = 'IDORI'; "
-    + " UPDATE Editorial SET nombre = 'EDITEDIT' WHERE id = EDIDORI;"
-
 
 BookService = function () {
 
@@ -33,26 +23,25 @@ BookService = function () {
         return bookPersistance.idfind(idparam).then(res => cb(res));
     }
 
-    this.DeleteBook = function (idnew) {
-        dataSource.executeQUERY(SELECT_LIBROS_DATA_LIST, {}, function (bookList) {
-            libroResponse = bookList.find(book => book.id == idnew
-        )
-            ;
-            console.log("El ID del libro a eliminar es :: " + JSON.stringify(libroResponse.title));
-            console.log("ELiminar-------------------------------------------------------------------------------------------------");
-            var indx = libroResponse.id;
-            var listTemp = bookList;
-            console.log("indx ::" + indx);
-            console.log("El libro encontrado es ::" + JSON.stringify(libroResponse));
-            dataSource.executeQUERY(SELECT_LIBROS_DELETE_LIST, {IDX: indx}, function (bookList) {
-            });
-
-            console.log("Los libros actuales son : " + JSON.stringify(bookList));
-
-        });
+    this.deleteBook = function (idnew,indx, cb) {
+        return bookPersistance.deleteBookcont(indx).then(res => cb(res));
     }
 
-    this.addBook = function (bookscomplete, titlenew, editnew, numpagina, resumnew , authornew , apellpat , apellmat) {
+
+    this.editBook = function (idparam, titlenew, editnew, pagnew, resumnew,libro_edit_id,cb) {
+        console.log(idparam);
+        console.log(titlenew);
+        console.log(editnew);
+        console.log(pagnew);
+        console.log(resumnew);
+        console.log(libro_edit_id);
+        bookPersistance.editBooksAllb(idparam, titlenew, pagnew, resumnew).then(res => {
+            bookPersistance.editBooksAllEdito(libro_edit_id, editnew).then(res => {cb (res)});
+        cb (res)});
+
+    }
+
+    this.addBook = function (bookscomplete, titlenew, editnew, numpagina, resumnew , authornew , apellpat , apellmat, cb) {
         var ids = [];
         var idposibles = new Array('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z');
 
@@ -94,41 +83,18 @@ BookService = function () {
 
         cb(res)});
 
-
-
-
     }
 
-    this.editBook = function (idparam, titlenew, authornew, editnew, pagnew, resumnew) {
-        console.log("IDparam ::" + idparam);
-        this.findById(idparam, function (libroResponse) {
-            console.log("estoy aqui..." + JSON.stringify(libroResponse));
-            dataSource.executeQUERY(SELECT_LIBROS_EDIT_LIST, {
-                TITLEEDIT: titlenew,
-                EDITEDIT: editnew,
-                PAGEDIT: pagnew,
-                RESUEDIT: resumnew,
-                IDORI: idparam,
-                EDIDORI: libroResponse.edit_id
-            }, function (bookList) {
-            });
-
-        });
-
-    }
-
-    this.BuscaBook = function (bookscomplete,id, edit, title, cb) {
+    this.BuscaBook = function (bookscomplete,id, edit, title,author, cb) {
 
             var libroResponse = [];
             var liboritem = null;
             var listTemp = bookscomplete;
             var istrueid = true;
-            //var istrueauthor = true  ;
             var istrueedit = true;
             var istruetitle = true;
 
             for (var item in listTemp) {
-              //  listTemp[item].author = listTemp[item].author.toLowerCase();
                 listTemp[item].title = listTemp[item].title.toLowerCase();
                 listTemp[item].edit = listTemp[item].edit.toLowerCase();
                 liboritem = listTemp[item];
@@ -142,16 +108,6 @@ BookService = function () {
                         istrueid = true;
                     }
                 }
-
-               /* if (author != false ){
-
-                     if (liboritem.author.toLowerCase() != author && !liboritem.author.toLowerCase().includes(author) && liboritem.author.trim() != author){
-                             istrueauthor = false;
-
-                     } else {
-                        istrueauthor= true ;
-                     }
-                }*/
 
                 if (edit != false) {
 
@@ -173,7 +129,7 @@ BookService = function () {
                     }
                 }
 
-                if (istrueid || istrueedit || istruetitle) {
+                if (istrueid || istrueedit || istruetitle ) {
                     if (liboritem) {
                         libroResponse.push(bookscomplete[item]);
                     }
@@ -186,7 +142,6 @@ BookService = function () {
 
             }
             cb(libroResponse);
-
     }
 
 }

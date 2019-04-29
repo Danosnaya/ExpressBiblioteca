@@ -6,7 +6,7 @@ DataSource = function () {
 
     const connectionData = {
         user: 'postgres',
-        host: 'localhost',
+        host: 'my_postgres',
         database: 'biblioteca',
         password: '1234567',
         port: 5432,

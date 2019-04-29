@@ -51,21 +51,17 @@ router.get('/search', function (req, res, next) {
 }
 });
 
-router.get('/busqueda', function(req, res, next) {
-           res.render('busca', { Name: 'Busqueda de un libro' });
-         });
-
 router.post('/busqueda', function(req, res, next){
     req.body.ParamBus = req.body.ParamBus.toLowerCase();
     var id = req.body.ParamBus;
     var title = req.body.ParamBus;
     var edit = req.body.ParamBus;
-    if (id == "" && edit == "" && title == ""){
+    if (id == "" && author == "" && edit == "" && title == ""){
             res.status(404).send('Ningun Parametro se escribio para la busqueda');
     }
     else {
         bookService.getList(function (bookscomplete){
-            bookService.BuscaBook(bookscomplete,id,edit,title,function(libroResponse){
+            bookService.BuscaBook(bookscomplete,id,edit,title, function(libroResponse){
                 var result = {};
                 result.title = "Resultado de busqueda";
                 result.libroResponse =  libroResponse;
@@ -74,10 +70,6 @@ router.post('/busqueda', function(req, res, next){
         });
     }
 });
-
-  router.get('/agregar', function(req, res, next) {
-    res.render('agregar', { title: 'Formulario para agregar un Libro' });
-  });
 
   router.post('/agregar', function(req, res){
   var titlenew = req.body.Titlenew;
@@ -88,45 +80,37 @@ router.post('/busqueda', function(req, res, next){
   var apellmat = req.body.ApellMat;
   var editnew = req.body.Editorialnew;
   bookService.getList(function (bookscomplete){
-    bookService.addBook(bookscomplete,titlenew,editnew,numpagina,resumnew,authornew,apellpat,apellmat);
+    bookService.addBook(bookscomplete,titlenew,editnew,numpagina,resumnew,authornew,apellpat,apellmat, function (libros){});
     res.render('redirecc', {formName:'Redireccionando a la pagina principal'});
    });
 });
 
-router.get('/:id/edit', function(req, res, next){
-        var idparam = req.params.id;
-            bookService.findById(idparam,function (libroResponse){
-            console.log ("Este libro se va a editar :: " +JSON.stringify(libroResponse));
-            libroResponse.formName='Formulario para Editar un Libro';
-            res.render('Editor',libroResponse);
-
-         });
-
-});
-
 router.post('/:id/edit', function(req, res){
-        var idparam = req.params.id;
-   //   console.log("libro a editar :: " +JSON.stringify(libroResponse));
+         var idparam = req.params.id;
          var titlenew = req.body.Newtit;//!== undefined  ? req.body.Newtit : false;
          var editnew = req.body.Newedito;//!== undefined  ? req.body.Newedito : false;
          var authornew = req.body.Newauth;//!== undefined  ? req.body.Newauth : false;
          var pagnew = req.body.Newpag;
          var resumnew = req.body.Newres
-            bookService.editBook(idparam,titlenew,authornew,editnew,pagnew,resumnew,function(){});
-         res.render('Princip', {formName:'Redireccionando a la pagina principal',idpag :idparam});
-
+         bookService.findById(idparam , function (libroResponse){
+            var libro_edit_id = libroResponse[0].edit_id;
+            bookService.editBook(idparam,titlenew,editnew,pagnew,resumnew,libro_edit_id,function(booksnew){
+            });
+            res.render('Princip', {formName:'Redireccionando a la pagina de detalle para ver cambios',idpag :idparam});
+        });
 });
 
 router.get('/:id/eliminar', function(req, res, next){
     var idnew = req.params.id;
+    bookService.getList(function (books ){
       bookService.findById(idnew,function (libroResponse){
-      if (libroResponse != null){
-        bookService.DeleteBook(idnew,function(){});
-        res.render('redirecc', {formName:'Redireccionando a la pagina principal'});
-         }
-      else {
-            res.status(404).send('Not Found');
-      }
+      var indx = libroResponse[0].id;
+              console.log(libroResponse);
+              console.log("indx "  + indx);
+          bookService.deleteBook(idnew, indx, function(booksnew){});
+          res.render('redirecc', {formName:'Redireccionando a la pagina principal'});
+
+    });
     });
 });
 
