@@ -33,7 +33,9 @@ var SELECT_LIBROS_ADD_LIST_BOOK_AUTOR = " insert into libros_autores(id,autor_id
 var SELECT_LIBROS_DELETE_LIST = " delete from libros "
                               + " where isbn = $1; "
 
-var SELECT_LIBROS_EDIT_LIST_LIBRO = " UPDATE libros SET titulo = $1 , numpaginas = $2 , resumen = $3 WHERE isbn = $4; "
+var SELECT_LIBROS_EDIT_LIST_LIBRO = " UPDATE libros SET titulo = $1 WHERE isbn = $2; "
+var SELECT_LIBROS_EDIT_LIST_LIBRO_T = " UPDATE libros SET numpaginas = $1 WHERE isbn = $2; "
+var SELECT_LIBROS_EDIT_LIST_LIBRO_TR = " UPDATE libros SET resumen = $1 WHERE isbn = $2; "
 var SELECT_LIBROS_EDIT_LIST_EDITOR = " UPDATE Editorial SET nombre = $1 WHERE id = $2; "
 
 
@@ -99,10 +101,22 @@ BookPersistance = function () {
         return   dataSource.query(queryOptions );
     }
 
-    this.editBooksAllb = function (titlenew, pagnew, resumnew, idparam){
+    this.editBooksAllb = function (titlenew, idparam){
         queryOptions.text = SELECT_LIBROS_EDIT_LIST_LIBRO;
-        queryOptions.values = [titlenew, pagnew, resumnew, idparam];
+        queryOptions.values = [titlenew, idparam];
         return   dataSource.query(queryOptions );
+    }
+
+    this.editBooksAllT = function (pagnew, idparam) {
+        queryOptions.text = SELECT_LIBROS_EDIT_LIST_LIBRO_T;
+        queryOptions.values = [pagnew, idparam];
+        return   dataSource.query(queryOptions );
+    }
+
+    this.editBooksAllTR = function(resumnew, idparam) {
+        queryOptions.text = SELECT_LIBROS_EDIT_LIST_LIBRO_TR;
+        queryOptions.values = [resumnew, idparam];
+        return    dataSource.query(queryOptions);
     }
 
     this. editBooksAllEdito = function (editnew, libro_edit_id) {

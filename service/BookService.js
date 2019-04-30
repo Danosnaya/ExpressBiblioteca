@@ -35,8 +35,12 @@ BookService = function () {
         console.log(pagnew);
         console.log(resumnew);
         console.log(libro_edit_id);
-        bookPersistance.editBooksAllb(idparam, titlenew, pagnew, resumnew).then(res => {
-            bookPersistance.editBooksAllEdito(libro_edit_id, editnew).then(res => {cb (res)});
+        bookPersistance.editBooksAllb(titlenew, idparam).then(res => {
+            bookPersistance.editBooksAllT(pagnew,idparam).then(res => {
+                bookPersistance.editBooksAllTR(resumnew,idparam).then(res => {
+                    bookPersistance.editBooksAllEdito(editnew,libro_edit_id).then(res => {cb (res)});
+                cb (res)});
+            cb (res)});
         cb (res)});
 
     }

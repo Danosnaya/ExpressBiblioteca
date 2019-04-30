@@ -56,7 +56,7 @@ router.post('/busqueda', function(req, res, next){
     var id = req.body.ParamBus;
     var title = req.body.ParamBus;
     var edit = req.body.ParamBus;
-    if (id == "" && author == "" && edit == "" && title == ""){
+    if (id == "" && edit == "" && title == ""){
             res.status(404).send('Ningun Parametro se escribio para la busqueda');
     }
     else {
