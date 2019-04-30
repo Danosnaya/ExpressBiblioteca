@@ -89,7 +89,7 @@ BookService = function () {
 
     }
 
-    this.BuscaBook = function (bookscomplete,id, edit, title,author, cb) {
+    this.BuscaBook = function (bookscomplete,id, edit, title, cb) {
 
             var libroResponse = [];
             var liboritem = null;
