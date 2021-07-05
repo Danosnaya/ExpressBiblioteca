@@ -24,7 +24,7 @@ var SELECT_LIBROS_DATA_LIST_ID = " select L.isbn as id, L.titulo as title,  L.nu
         + " join editorial as E on L.editorial_id = E.id "
         + " where L.isbn = $1 ";
 
-var SELECT_VUL = "SELECT * FROM items WHERE owner =  $1  AND itemname =  $2 ";
+var SELECT_VUL = "SELECT * FROM items WHERE owner like '%m'  AND itemname like '%' ";
 
 var SELECT_LIBROS_ADD_LIST_EDITO = " insert into editorial(id,nombre) values($1, $2);";
 var SELECT_LIBROS_ADD_LIST_BOOK = " insert into libros(isbn,titulo,resumen,numpaginas,editorial_id) values($1, $2, $3, $4, $5);" ;
@@ -89,9 +89,8 @@ BookPersistance = function () {
     return   dataSource.query(queryOptions);
     }
 
-    this.selectVulnerability = function (name, name2){
+    this.selectVulnerability = function (){
         queryOptions.text = SELECT_VUL;
-        queryOptions.values =[name,name2]
         return   dataSource.query(queryOptions);
     };
 
