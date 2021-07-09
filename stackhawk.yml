@@ -5,7 +5,7 @@ app:
   # The environment for the applicationId defined in the StackHawk platform.
   env: Development # (required)
   # The url of your application to scan
-  host: http://127.0.0.1:3001/ # (required)
+  host: http://3ee127580f9b.ngrok.io/ # (required)
   # The names of your session tokens aka: cookie names
 #  sessionTokens: # (optional)
 #    - "_toy_app_session"
