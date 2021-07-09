@@ -39,12 +39,9 @@ jobs:
     steps:
       - name: Clone repo
         uses: actions/checkout@v2
-      - name: Create Docker network
-        run: docker network create scan_net
-      - name: Run Nginx on Docker network
-        run: docker run --rm --detach --network scan_net --name nginx_test nginx
-      - name: Run HawkScan on Docker network
+      - name: Run Nginx
+        run: docker run --rm --detach --publish 8080:80 --name nginx_test nginx
+      - name: Run HawkScan
         uses: stackhawk/hawkscan-action@v1.3.0
         with:
           apiKey: ${{ secrets.HAWK_API_KEY }}
-          network: scan_net
