@@ -32,3 +32,14 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.TOKEN_GIT }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+  hawkscan:
+    name: HawkScan
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone repo
+        uses: actions/checkout@v2
+      - name: Run HawkScan
+        uses: stackhawk/hawkscan-action@v1.3.0
+        with:
+          apiKey: ${{ secrets.HAWK_API_KEY }}
